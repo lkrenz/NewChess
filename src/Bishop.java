@@ -16,4 +16,8 @@ public class Bishop extends Piece{
     public boolean checkMove (Location location) {
         return false;
     }
+
+    public Bishop clone() {
+        return new Bishop(getRow(), getCol(), getColor());
+    }
 }

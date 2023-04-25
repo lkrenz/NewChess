@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 public class Board {
     private Tile[][] board;
-
     private Location whiteKing;
     private Location blackKing;
-    private
+    private ArrayList<Location> blackControls;
+    private ArrayList<Location> whiteControls;
 
     public Board() {
         board[0][0] = new Tile(new Rook(0,0, 0));
@@ -38,7 +39,7 @@ public class Board {
     public Board(Tile[][] board) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                this.board[i][j] = board[i][j];
+                this.board[i][j] = board[i][j].clone();
             }
         }
     }
@@ -55,5 +56,15 @@ public class Board {
         return false;
     }
 
-    public
+    public boolean isWhiteChecked() {
+        if (blackControls.indexOf(whiteKing) != -1)
+            return true;
+        return false;
+    }
+
+    public boolean isBlackChecked() {
+        if (whiteControls.indexOf(blackKing) != -1)
+            return true;
+        return false;
+    }
 }

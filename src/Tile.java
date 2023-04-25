@@ -26,4 +26,8 @@ public class Tile {
     public void draw(Graphics g) {
         return;
     }
+
+    public Tile clone() {
+        return new Tile();
+    }
 }

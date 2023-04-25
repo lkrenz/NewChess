@@ -16,4 +16,7 @@ public class King extends Piece{
         return null;
     }
 
+    public King clone() {
+        return new King(getRow(), getCol(), getColor());
+    }
 }

@@ -47,4 +47,8 @@ public class Piece {
     public void draw(Graphics g) {
         return;
     }
+
+    public Piece clone() {
+        return null;
+    }
 }
