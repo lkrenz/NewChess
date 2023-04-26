@@ -14,6 +14,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         this.setTitle("Chess");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.boardImage = boardImage;
+        repaint();
     }
 
     public void drawBoard(Graphics g) {
