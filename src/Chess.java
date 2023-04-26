@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Stack;
 
 public class Chess {
@@ -7,6 +8,7 @@ public class Chess {
     public Chess() {
         this.boards = new Stack<Board>();
         boards.push(new Board());
+        window = new ChessView(new ImageIcon("Resources/chessboard.png").getImage());
     }
 
     public void startGame() {
@@ -63,5 +65,9 @@ public class Chess {
 
     public boolean blackCanMove() {
         return false;
+    }
+
+    public static void main(String[] args) {
+        Chess game = new Chess();
     }
 }

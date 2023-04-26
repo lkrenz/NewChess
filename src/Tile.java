@@ -1,3 +1,4 @@
+import java.awt.*;
 public class Tile {
     private Piece piece;
 
@@ -31,5 +32,6 @@ public class Tile {
         if (piece != null) {
             return new Tile(piece.clone(board));
         }
+        return new Tile();
     }
 }

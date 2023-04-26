@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 public class Board {
     private Tile[][] board;
@@ -9,6 +10,9 @@ public class Board {
     private ArrayList<Location> blackPieces;
 
     public Board() {
+        this.board = new Tile[8][8];
+        this.whitePieces = new ArrayList<>();
+        this.blackPieces = new ArrayList<>();
         board[0][0] = new Tile(new Rook(0,0, 0, this));
         blackPieces.add(new Location(0,0));
         board[0][7] = new Tile(new Rook(0,7,0, this));
@@ -108,16 +112,16 @@ public class Board {
     }
 
     public boolean isWhiteChecked() {
-        if (blackControls.indexOf(whiteKing) != -1)
+        if (blackControls.indexOf(whitePieces.get(0)) != -1)
             return true;
         return false;
     }
 
     public boolean isBlackChecked() {
-        if (whiteControls.indexOf(blackKing) != -1)
+        if (whiteControls.indexOf(blackPieces.get(0)) != -1)
             return true;
         return false;
     }
 
-    public
+
 }

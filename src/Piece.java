@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.*;
 public class Piece {
     private Location location;
     private int color;
