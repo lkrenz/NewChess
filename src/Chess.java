@@ -39,11 +39,26 @@ public class Chess {
     }
 
     public void whiteMove() {
-        return;
+        Location move = window.getMove();
+        while (!checkWhiteMove(move)) {
+            move = window.getMove();
+        }
     }
 
     public void blackMove() {
         return;
+    }
+
+    public boolean checkWhiteMove(Location move) {
+        if (!boards.peek().getWhitePieces().contains(move)) {
+            return false;
+        }
+        boards.add(new Board(boards.peek().getBoard()));
+        boards.peek().makeMove(move);
+        if (boards.peek().isWhiteChecked()) {
+            return false;
+        }
+        return true;
     }
 
     public boolean blackCanMove() {

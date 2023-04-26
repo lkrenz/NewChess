@@ -27,7 +27,9 @@ public class Tile {
         return;
     }
 
-    public Tile clone() {
-        return new Tile();
+    public Tile clone(Board board) {
+        if (piece != null) {
+            return new Tile(piece.clone(board));
+        }
     }
 }

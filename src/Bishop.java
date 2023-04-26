@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 public class Bishop extends Piece{
 
-    public Bishop (int row, int col, int color) {
-        super(row, col, color);
+    public Bishop (int row, int col, int color, Board board) {
+        super(row, col, color, board);
     }
 
     public void makeMove(Location location) {
@@ -17,7 +17,8 @@ public class Bishop extends Piece{
         return false;
     }
 
-    public Bishop clone() {
-        return new Bishop(getRow(), getCol(), getColor());
+    public Bishop clone(Board board) {
+        return new Bishop(getRow(), getCol(), getColor(), board);
     }
+
 }

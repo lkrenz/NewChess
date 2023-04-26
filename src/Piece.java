@@ -3,10 +3,12 @@ public class Piece {
     private Location location;
     private int color;
     private ArrayList<Location> controlled;
+    private Board board;
 
-    public Piece(int row, int col, int color) {
+    public Piece(int row, int col, int color, Board board) {
         this.color = color;
         this.location = new Location(row, col);
+        this.board = board;
     }
     public boolean canPassant() {
         return false;
@@ -48,7 +50,7 @@ public class Piece {
         return;
     }
 
-    public Piece clone() {
+    public Piece clone(Board board) {
         return null;
     }
 }
