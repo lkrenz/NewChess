@@ -4,6 +4,7 @@ public class Piece {
     private Location location;
     private int color;
     private ArrayList<Location> controlled;
+    private ArrayList<Location> moves;
     private Board board;
 
     public Piece(int row, int col, int color, Board board) {
@@ -13,6 +14,10 @@ public class Piece {
     }
     public boolean canPassant() {
         return false;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Location getLocation() {
@@ -37,6 +42,9 @@ public class Piece {
 
     public void checkMove() {
         return;
+    }
+    public void setMoves(ArrayList<Location> moves) {
+        this.moves = moves;
     }
 
     public void getControlled () {

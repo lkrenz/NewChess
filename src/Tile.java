@@ -24,6 +24,12 @@ public class Tile {
         return piece1;
     }
 
+    public boolean hasPiece() {
+        if (piece != null) {
+            return false;
+        }
+    }
+
     public void draw(Graphics g) {
         return;
     }

@@ -103,6 +103,16 @@ public class Board {
         return;
     }
 
+    public boolean canMove(int color, int row, int col) {
+        if (board[row][col].hasPiece()) {
+            if (board[row][col].getPiece().getColor() != color) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
     public void drawBlackBoard(Graphics g) {
         return;
     }
