@@ -9,6 +9,13 @@ public class Location {
         this.col = col;
     }
 
+    public Location(Location location, int row, int col) {
+        this.toRow = location.getRow();
+        this.toCol = location.getCol();
+        this.row = row;
+        this.col = col;
+    }
+
     public Location (int row, int col, int toRow, int toCol) {
         this.row = row;
         this.col = col;

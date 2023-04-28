@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.ArrayList;
+
 public class Tile {
     private Piece piece;
 
@@ -28,6 +30,7 @@ public class Tile {
         if (piece != null) {
             return false;
         }
+        return false;
     }
 
     public void draw(Graphics g) {
@@ -40,4 +43,13 @@ public class Tile {
         }
         return new Tile();
     }
+
+    public void getMoves(ArrayList<Location> moves) {
+        piece.getMoves(moves);
+    }
+
+    public void getControlled(ArrayList<Location> controls) {
+        piece.getControlled(controls);
+    }
+
 }

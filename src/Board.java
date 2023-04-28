@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 public class Board {
     private Tile[][] board;
@@ -56,7 +57,6 @@ public class Board {
         blackPieces.add(new Location(7,3));
         board[7][3] = new Tile(new King(7,4,1, this));
         blackPieces.add(new Location(7,4));
-
     }
 
     public Board(Tile[][] board) {
@@ -67,12 +67,40 @@ public class Board {
         }
     }
 
+    public void findBlackControls() {
+        blackControls = new ArrayList<Location>();
+        for (Location l : blackPieces) {
+            board[l.getRow()][l.getCol()].getControlled(blackControls);
+        }
+    }
+
+    public void findWhiteControls() {
+        whiteControls = new ArrayList<>();
+        for (Location l : whitePieces) {
+            board[l.getRow()][l.getCol()].getControlled(whiteControls);
+        }
+    }
+
     public ArrayList<Location> getBlackControls() {
         return blackControls;
     }
 
     public ArrayList<Location> getWhiteControls() {
         return whiteControls;
+    }
+
+    public void findWhiteMoves() {
+        whiteMoves = new ArrayList<>();
+        for (Location l : whitePieces) {
+            board[l.getRow()][l.getCol()].getMoves(whiteMoves);
+        }
+    }
+
+    public void findBlackMoves() {
+        blackMoves = new ArrayList<>();
+        for (Location l : blackPieces) {
+            board[l.getRow()][l.getCol()].getControlled(blackMoves);
+        }
     }
 
     public ArrayList<Location> getWhiteMoves() {

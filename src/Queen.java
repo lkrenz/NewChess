@@ -10,7 +10,18 @@ public class Queen extends Piece{
     }
 
     public void findMoves() {
-
+        int row = getRow();
+        int col = getCol();
+        ArrayList<Location> moves = new ArrayList<>();
+        findDiagonals(moves, 1, 1, row, col);
+        findDiagonals(moves, -1, -1, row, col);
+        findDiagonals(moves, -1, 1, row, col);
+        findDiagonals(moves, 1, -1, row, col);
+        findHorizontals(moves, 1, 0, row, col);
+        findHorizontals(moves, 0, 1, row, col);
+        findHorizontals(moves, -1, 0, row, col);
+        findHorizontals(moves, 0, -1, row, col);
+        setMoves(moves);
     }
 
     public void findDiagonals(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {

@@ -9,10 +9,6 @@ public class Bishop extends Piece{
         return;
     }
 
-    public ArrayList<Location> findControlled() {
-        return null;
-    }
-
     public boolean checkMove (Location location) {
         return false;
     }
@@ -28,6 +24,7 @@ public class Bishop extends Piece{
         addMoves(moves, -1, -1, row, col);
         setMoves(moves);
     }
+
 
     // Recursively moves diagonally until hits edge of board or another piece, adding each location to moves.
     public void addMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {

@@ -45,5 +45,14 @@ public class Pawn extends Piece {
         return new Pawn(getRow(), getCol(), getColor(), board);
     }
 
-
+    public void findControlled() {
+        ArrayList<Location> attacks = new ArrayList<>();
+        if (getCol() < 7) {
+            attacks.add(new Location(getRow() + 1, getCol() + 1));
+        }
+        if (getCol() > 0) {
+            attacks.add(new Location(getRow() + 1, getCol() + 1));
+        }
+        setControlled(attacks);
+    }
 }

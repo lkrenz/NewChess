@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class King extends Piece{
 
@@ -12,15 +13,13 @@ public class King extends Piece{
     public void makeMove(Location location) {
         return;
     }
-    public ArrayList<Location> findControlled() {
-        return null;
-    }
+
     public King clone(Board board) {
         return new King(getRow(), getCol(), getColor(), board);
     }
 
     // Adds all possible king moves then removes any that are controlled by the opposite color
-    public void findMoves() {
+    public ArrayList<Location> findControlled() {
         int row = getRow();
         int col = getCol();
 
@@ -51,6 +50,13 @@ public class King extends Piece{
         if (col > 0) {
             moves.add(new Location(row, col - 1));
         }
+        return moves;
+    }
+
+    public void findMoves() {
+        ArrayList<Location> moves = new ArrayList<>();
+        moves = findControlled();
+
         ArrayList<Location> checkArr;
         if (getColor() == 1) {
             checkArr = getBoard().getBlackControls();
@@ -67,5 +73,9 @@ public class King extends Piece{
             i++;
         }
         setMoves(moves);
+    }
+
+    public void setControlled() {
+        setControlled(findControlled());
     }
 }

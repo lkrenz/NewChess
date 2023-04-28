@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.awt.*;
 public class Piece {
@@ -47,8 +48,31 @@ public class Piece {
         this.moves = moves;
     }
 
-    public void getControlled () {
-        return;
+    public void getControlled(ArrayList<Location> attacks) {
+        if (controlled != null) {
+            for (Location l : controlled) {
+                attacks.add(l);
+            }
+        }
+        else {
+            for (Location l : moves) {
+                attacks.add(l);
+            }
+        }
+    }
+
+    public void getMoves(ArrayList<Location> attacks) {
+        for (Location l : moves) {
+            attacks.add(new Location(l, getRow(), getCol()));
+        }
+    }
+
+    public ArrayList<Location> getMoves() {
+        return moves;
+    }
+
+    public void setControlled(ArrayList<Location> controlled) {
+        this.controlled = controlled;
     }
 
     public void castle() {
