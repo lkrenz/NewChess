@@ -67,6 +67,16 @@ public class Board {
         }
     }
 
+    public void resetControls() {
+        findBlackControls();
+        findWhiteControls();
+    }
+
+    public void resetMoves() {
+        findBlackMoves();
+        findWhiteMoves();
+    }
+
     public void findBlackControls() {
         blackControls = new ArrayList<Location>();
         for (Location l : blackPieces) {
@@ -150,16 +160,16 @@ public class Board {
     }
 
     public boolean isWhiteChecked() {
+        findBlackControls();
         if (blackControls.indexOf(whitePieces.get(0)) != -1)
             return true;
         return false;
     }
 
     public boolean isBlackChecked() {
+        findWhiteControls();
         if (whiteControls.indexOf(blackPieces.get(0)) != -1)
             return true;
         return false;
     }
-
-
 }

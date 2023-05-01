@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.util.Stack;
 
 public class Chess {
-    private Stack<Board> boards;
+    private Board board;
+    private Board checkBoard;
     private ChessView window;
 
     public Chess() {
-        this.boards = new Stack<Board>();
-        boards.push(new Board());
+        this.board = new Board();
         window = new ChessView(new ImageIcon("Resources/chessboard.png").getImage());
     }
 
@@ -16,7 +16,7 @@ public class Chess {
         String winner;
         while (!gameOver) {
             if (!whiteCanMove()) {
-                if (boards.peek().isWhiteChecked()) {
+                if (board.isWhiteChecked()) {
                     winner = "Black";
                     break;
                 }
@@ -25,7 +25,7 @@ public class Chess {
             }
             whiteMove();
             if (!blackCanMove()) {
-                if (boards.peek().isBlackChecked()) {
+                if (board.isBlackChecked()) {
                     winner = "White";
                     break;
                 }
@@ -37,6 +37,16 @@ public class Chess {
     }
 
     public boolean whiteCanMove() {
+        if (board.getWhiteMoves().size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean blackCanMove() {
+        if (board.getBlackMoves().size() > 0) {
+            return true;
+        }
         return false;
     }
 
@@ -52,21 +62,28 @@ public class Chess {
     }
 
     public boolean checkWhiteMove(Location move) {
-        if (!boards.peek().getWhitePieces().contains(move)) {
+        if (!board.getWhiteMoves().contains(move)) {
             return false;
         }
-        boards.add(new Board(boards.peek().getBoard()));
-        boards.peek().makeMove(move);
-        if (boards.peek().isWhiteChecked()) {
+        checkBoard = new Board(board.getBoard());
+        checkBoard.makeMove(move);
+        if (checkBoard.isWhiteChecked()) {
             return false;
         }
         return true;
     }
 
-    public boolean blackCanMove() {
-        return false;
+    public boolean checkBlackMove(Location move) {
+        if (!board.getBlackMoves().contains(move)) {
+            return false;
+        }
+        checkBoard = new Board(board.getBoard());
+        checkBoard.makeMove(move);
+        if (checkBoard.isBlackChecked()) {
+            return false;
+        }
+        return true;
     }
-
     public static void main(String[] args) {
         Chess game = new Chess();
     }
