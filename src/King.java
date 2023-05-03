@@ -1,9 +1,10 @@
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class King extends Piece{
 
-    public King(int row, int col, int color, Board board) {
-        super(row, col, color, board);
+    public King(int row, int col, int color, Board board, Image image) {
+        super(row, col, color, board, image);
     }
 
     public boolean checkMove(Location location) {
@@ -15,7 +16,7 @@ public class King extends Piece{
     }
 
     public King clone(Board board) {
-        return new King(getRow(), getCol(), getColor(), board);
+        return new King(getRow(), getCol(), getColor(), board, getImage());
     }
 
     // Adds all possible king moves then removes any that are controlled by the opposite color

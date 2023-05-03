@@ -1,7 +1,8 @@
+import java.awt.*;
 import java.util.ArrayList;
 public class Pawn extends Piece {
-    public Pawn(int row, int col, int color, Board board) {
-        super(row, col, color, board);
+    public Pawn(int row, int col, int color, Board board, Image image) {
+        super(row, col, color, board, image);
     }
 
     public ArrayList<Location> findControls() {
@@ -42,7 +43,7 @@ public class Pawn extends Piece {
     }
 
     public Pawn clone(Board board) {
-        return new Pawn(getRow(), getCol(), getColor(), board);
+        return new Pawn(getRow(), getCol(), getColor(), board, getImage());
     }
 
     public void findControlled() {

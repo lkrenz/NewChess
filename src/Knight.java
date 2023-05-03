@@ -1,13 +1,14 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Knight extends Piece{
 
-    public Knight (int row, int col, int color, Board board) {
-        super(row, col, color, board);
+    public Knight (int row, int col, int color, Board board, Image image) {
+        super(row, col, color, board, image);
     }
 
     public Knight clone(Board board) {
-        return new Knight(getRow(), getCol(), getColor(), board);
+        return new Knight(getRow(), getCol(), getColor(), board, getImage());
     }
 
     public void findMoves() {

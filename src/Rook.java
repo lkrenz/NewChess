@@ -1,13 +1,14 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Rook extends Piece{
 
-    public Rook(int row, int col, int color, Board board) {
-        super(row, col, color, board);
+    public Rook(int row, int col, int color, Board board, Image image) {
+        super(row, col, color, board, image);
     }
 
     public Rook clone(Board board) {
-        return new Rook(getRow(), getCol(), getColor(), board);
+        return new Rook(getRow(), getCol(), getColor(), board, getImage());
     }
 
     public void findMoves() {

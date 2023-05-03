@@ -7,11 +7,13 @@ public class Piece {
     private ArrayList<Location> controlled;
     private ArrayList<Location> moves;
     private Board board;
+    private Image image;
 
-    public Piece(int row, int col, int color, Board board) {
+    public Piece(int row, int col, int color, Board board, Image image) {
         this.color = color;
         this.location = new Location(row, col);
         this.board = board;
+        this.image = image;
     }
     public boolean canPassant() {
         return false;
@@ -19,6 +21,10 @@ public class Piece {
 
     public Board getBoard() {
         return board;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public Location getLocation() {
@@ -36,6 +42,7 @@ public class Piece {
     public int getColor() {
         return color;
     }
+
 
     public boolean isFirstMove() {
         return false;
@@ -86,4 +93,6 @@ public class Piece {
     public Piece clone(Board board) {
         return null;
     }
+
+    public void findMoves() {}
 }

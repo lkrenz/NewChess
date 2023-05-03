@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.Stack;
 
 public class Chess {
@@ -8,33 +9,34 @@ public class Chess {
 
     public Chess() {
         this.board = new Board();
-        window = new ChessView(new ImageIcon("Resources/chessboard.png").getImage());
+        window = new ChessView(new ImageIcon("Resources/Chessboard.png").getImage(), this);
+        board.setWindow(window);
     }
 
-    public void startGame() {
-        boolean gameOver = false;
-        String winner;
-        while (!gameOver) {
-            if (!whiteCanMove()) {
-                if (board.isWhiteChecked()) {
-                    winner = "Black";
-                    break;
-                }
-                winner = "Stalemate";
-                break;
-            }
-            whiteMove();
-            if (!blackCanMove()) {
-                if (board.isBlackChecked()) {
-                    winner = "White";
-                    break;
-                }
-                winner = "Stalemate";
-                break;
-            }
-            blackMove();
-        }
-    }
+//    public void startGame() {
+//        boolean gameOver = false;
+//        String winner;
+//        while (!gameOver) {
+//            if (!whiteCanMove()) {
+//                if (board.isWhiteChecked()) {
+//                    winner = "Black";
+//                    break;
+//                }
+//                winner = "Stalemate";
+//                break;
+//            }
+//            whiteMove();
+//            if (!blackCanMove()) {
+//                if (board.isBlackChecked()) {
+//                    winner = "White";
+//                    break;
+//                }
+//                winner = "Stalemate";
+//                break;
+//            }
+//            blackMove();
+//        }
+//    }
 
     public boolean whiteCanMove() {
         if (board.getWhiteMoves().size() > 0) {
@@ -50,18 +52,12 @@ public class Chess {
         return false;
     }
 
-    public void whiteMove() {
-        Location move = window.getMove();
-        while (!checkWhiteMove(move)) {
-            move = window.getMove();
-        }
-    }
-
-    public void blackMove() {
-        return;
+    public void makeMove(Location l) {
+        board.makeMove(l);
     }
 
     public boolean checkWhiteMove(Location move) {
+        board.findWhiteMoves();
         if (!board.getWhiteMoves().contains(move)) {
             return false;
         }
@@ -83,6 +79,26 @@ public class Chess {
             return false;
         }
         return true;
+    }
+
+    public void drawPieces(Graphics g) {
+        board.drawPieces(g);
+    }
+
+    public void move(Location l, int status) {
+        if (status == 1) {
+            if (checkWhiteMove(l)) {
+                makeMove(l);
+            }
+            else {
+                System.out.println("white check failed");
+            }
+        }
+        else {
+            if (checkBlackMove(l)) {
+                makeMove(l);
+            }
+        }
     }
     public static void main(String[] args) {
         Chess game = new Chess();
