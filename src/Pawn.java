@@ -46,7 +46,7 @@ public class Pawn extends Piece {
         return new Pawn(getRow(), getCol(), getColor(), board, getImage());
     }
 
-    public void findControlled() {
+    public ArrayList<Location> findControlled() {
         ArrayList<Location> attacks = new ArrayList<>();
         if (getCol() < 7) {
             attacks.add(new Location(getRow() + 1, getCol() + 1));
@@ -54,6 +54,10 @@ public class Pawn extends Piece {
         if (getCol() > 0) {
             attacks.add(new Location(getRow() + 1, getCol() + 1));
         }
-        setControlled(attacks);
+        return attacks;
+    }
+
+    public void setControlled() {
+        setControlled(findControlled());
     }
 }

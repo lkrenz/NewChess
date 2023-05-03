@@ -12,6 +12,7 @@ public class Knight extends Piece{
     }
 
     public void findMoves() {
+        System.out.println("called");
         ArrayList<Location> moves = new ArrayList<>();
         int row = getRow();
         int col = getCol();

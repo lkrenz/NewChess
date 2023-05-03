@@ -58,14 +58,20 @@ public class Chess {
 
     public boolean checkWhiteMove(Location move) {
         board.findWhiteMoves();
-        if (!board.getWhiteMoves().contains(move)) {
+        if (!board.whiteHas(move)) {
+            System.out.println("No good");
             return false;
         }
-        checkBoard = new Board(board.getBoard());
-        checkBoard.makeMove(move);
-        if (checkBoard.isWhiteChecked()) {
+        Piece p = null;
+        if (board.getBoard()[move.getToRow()][move.getToCol()].hasPiece()) {
+            p = board.getBoard()[move.getToRow()][move.getToCol()].getPiece();
+        }
+        board.makeMove(move);
+        if (board.isWhiteChecked()) {
+            undoMove(move, p);
             return false;
         }
+        undoMove(move, p);
         return true;
     }
 
@@ -73,12 +79,19 @@ public class Chess {
         if (!board.getBlackMoves().contains(move)) {
             return false;
         }
-        checkBoard = new Board(board.getBoard());
+        checkBoard = new Board(board);
         checkBoard.makeMove(move);
         if (checkBoard.isBlackChecked()) {
             return false;
         }
         return true;
+    }
+
+    public void undoMove(Location move, Piece p) {
+        board.makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+        if (p != null) {
+            board.getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
+        }
     }
 
     public void drawPieces(Graphics g) {

@@ -9,13 +9,16 @@ public class Location {
         this.col = col;
     }
 
-    public Location(Location location, int row, int col) {
+    public Location(int row, int col, Location location) {
         this.toRow = location.getRow();
         this.toCol = location.getCol();
         this.row = row;
         this.col = col;
     }
 
+    public String toString() {
+        return row + ", " + col + " -----> " + toRow + ", " + toCol;
+    }
     public Location (int row, int col, int toRow, int toCol) {
         this.row = row;
         this.col = col;
@@ -37,5 +40,12 @@ public class Location {
 
     public int getToCol() {
         return toCol;
+    }
+
+    public boolean equals(Location l) {
+        if (this.row == l.getRow() && this.col == l.getCol() && this.toRow == l.getToRow() && this.toCol == l.getToCol()) {
+            return true;
+        }
+        return false;
     }
 }

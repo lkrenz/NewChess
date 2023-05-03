@@ -45,10 +45,13 @@ public class Tile {
     }
 
     public void getMoves(ArrayList<Location> moves) {
+        piece.findMoves();
         piece.getMoves(moves);
     }
 
     public void getControlled(ArrayList<Location> controls) {
+        piece.setControlled();
+
         piece.getControlled(controls);
     }
 

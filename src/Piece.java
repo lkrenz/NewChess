@@ -70,7 +70,7 @@ public class Piece {
 
     public void getMoves(ArrayList<Location> attacks) {
         for (Location l : moves) {
-            attacks.add(new Location(l, getRow(), getCol()));
+            attacks.add(new Location(getRow(), getCol(), l));
         }
     }
 
@@ -95,4 +95,8 @@ public class Piece {
     }
 
     public void findMoves() {}
+
+    public void setControlled() {
+        this.controlled = moves;
+    }
 }

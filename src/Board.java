@@ -83,10 +83,17 @@ public class Board {
     public void setWindow(ChessView window) {
         this.window = window;
     }
-    public Board(Tile[][] board) {
+    public Board(Board b) {
+        this.board = new Tile[8][8];
+        this.whitePieces = new ArrayList<>();
+        this.blackPieces = new ArrayList<>();
+        this.whiteMoves = new ArrayList<>();
+        this.blackMoves = new ArrayList<>();
+        this.whiteControls = new ArrayList<>();
+        this.blackControls = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                this.board[i][j] = board[i][j].clone(this);
+                this.board[i][j] = b.getBoard()[i][j].clone(this);
             }
         }
     }
@@ -108,13 +115,6 @@ public class Board {
         }
     }
 
-    public void findWhiteControls() {
-        whiteControls = new ArrayList<>();
-        for (Location l : whitePieces) {
-            board[l.getRow()][l.getCol()].getControlled(whiteControls);
-        }
-    }
-
     public ArrayList<Location> getBlackControls() {
         return blackControls;
     }
@@ -130,11 +130,27 @@ public class Board {
         }
     }
 
+    public void findWhiteControls() {
+        whiteControls = new ArrayList<>();
+        for (Location l : whitePieces) {
+            board[l.getRow()][l.getCol()].getControlled(whiteControls);
+        }
+    }
+
     public void findBlackMoves() {
         blackMoves = new ArrayList<>();
         for (Location l : blackPieces) {
             board[l.getRow()][l.getCol()].getControlled(blackMoves);
         }
+    }
+
+    public boolean whiteHas(Location l) {
+        for (Location move : whiteMoves) {
+            if (move.equals(l)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Location> getWhiteMoves() {
