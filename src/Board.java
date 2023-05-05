@@ -48,21 +48,21 @@ public class Board {
             }
         }
         board[7][0] = new Tile(new Rook(7,0, 1, this, images[7]));
-        blackPieces.add(new Location(7,0));
+        whitePieces.add(new Location(7,0));
         board[7][7] = new Tile(new Rook(7,7,1, this, images[7]));
-        blackPieces.add(new Location(7,7));
+        whitePieces.add(new Location(7,7));
         board[7][1] = new Tile(new Knight(7,1, 1, this, images[8]));
-        blackPieces.add(new Location(7,1));
+        whitePieces.add(new Location(7,1));
         board[7][6] = new Tile(new Knight(7,6, 1, this, images[8]));
-        blackPieces.add(new Location(7,6));
+        whitePieces.add(new Location(7,6));
         board[7][2] = new Tile(new Bishop(7,2,1, this, images[9]));
-        blackPieces.add(new Location(7,2));
+        whitePieces.add(new Location(7,2));
         board[7][5] = new Tile(new Bishop(7,5,1, this, images[9]));
-        blackPieces.add(new Location(7,5));
+        whitePieces.add(new Location(7,5));
         board[7][4] = new Tile(new Queen(7, 3, 1, this, images[10]));
-        blackPieces.add(new Location(7,3));
+        whitePieces.add(new Location(7,3));
         board[7][3] = new Tile(new King(7,4,1, this, images[11]));
-        blackPieces.add(new Location(7,4));
+        whitePieces.add(new Location(7,4));
     }
 
     public void instantiatePieces() {
@@ -130,6 +130,12 @@ public class Board {
         }
     }
 
+    public void printWhiteMoves() {
+        for (Location l : whiteMoves) {
+            System.out.println(l);
+        }
+    }
+
     public void findWhiteControls() {
         whiteControls = new ArrayList<>();
         for (Location l : whitePieces) {
@@ -177,6 +183,18 @@ public class Board {
         board[location.getToRow()][location.getToCol()].setPiece(board[location.getRow()][location.getCol()].removePiece());
     }
 
+    public void makeWhiteMove(Location location) {
+        Location moveOrigin = new Location(location.getRow(), location.getCol());
+        for (int i = 0; i < whitePieces.size(); i++) {
+            if (whitePieces.get(i).equals(moveOrigin)) {
+                System.out.println(moveOrigin.getRow() + ", " + moveOrigin.getCol());
+                board[moveOrigin.getRow()][moveOrigin.getCol()].movePiece(new Location(location.getToRow(), location.getToCol()));
+                whitePieces.set(i, new Location(location.getToRow(), location.getToCol()));
+            }
+        }
+        makeMove(location);
+    }
+
     public void drawWhiteBoard(Graphics g) {
         return;
     }
@@ -191,14 +209,19 @@ public class Board {
         return true;
     }
 
+    public void movePiece(Location l) {
+        board[l.getToRow()][l.getToCol()] = board[l.getRow()][l.getCol()];
+        board[l.getRow()][l.getCol()] = null;
+    }
+
     public void drawBlackBoard(Graphics g) {
         return;
     }
 
     public void drawPieces(Graphics g) {
         for (Location l : whitePieces) {
-            Piece p = board[l.getRow()][l.getCol()].getPiece();
-            g.drawImage(p.getImage(),200 + p.getCol() * 50, 100 + p.getRow() * 50, 50, 50, window);
+            Image i = board[l.getRow()][l.getCol()].getPiece().getImage();
+            g.drawImage(i,200 + l.getCol() * 50, 100 + l.getRow() * 50, 50, 50, window);
         }
         for (Location l : blackPieces) {
             Piece p = board[l.getRow()][l.getCol()].getPiece();

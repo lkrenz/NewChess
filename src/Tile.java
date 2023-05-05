@@ -63,4 +63,8 @@ public class Tile {
         piece.getControlled(controls);
     }
 
+    public void movePiece(Location l) {
+        System.out.println(hasPiece() + "");
+        piece.move(l);
+    }
 }

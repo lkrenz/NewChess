@@ -58,6 +58,7 @@ public class Chess {
 
     public boolean checkWhiteMove(Location move) {
         board.findWhiteMoves();
+        board.printWhiteMoves();
         if (!board.whiteHas(move)) {
             System.out.println("No good");
             return false;
@@ -66,7 +67,7 @@ public class Chess {
         if (board.getBoard()[move.getToRow()][move.getToCol()].hasPiece()) {
             p = board.getBoard()[move.getToRow()][move.getToCol()].getPiece();
         }
-        board.makeMove(move);
+        board.makeWhiteMove(move);
         if (board.isWhiteChecked()) {
             undoMove(move, p);
             return false;

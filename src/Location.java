@@ -7,6 +7,8 @@ public class Location {
     public Location (int row, int col) {
         this.row = row;
         this.col = col;
+        this.toRow = -1;
+        this.toCol = -1;
     }
 
     public Location(int row, int col, Location location) {
@@ -48,4 +50,6 @@ public class Location {
         }
         return false;
     }
+
+
 }

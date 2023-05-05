@@ -82,6 +82,10 @@ public class Piece {
         this.controlled = controlled;
     }
 
+    public void move(Location l) {
+        this.location = l;
+    }
+
     public void castle() {
         return;
     }

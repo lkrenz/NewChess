@@ -59,8 +59,6 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     public void mouseReleased(MouseEvent e) {
         this.moveToX = e.getX();
         this.moveToY = e.getY();
-        System.out.println(moveToX);
-        System.out.println(moveToY);
         if (!(moveX <= 600 && moveX >= 200) || !(moveToX <= 600 && moveToX >= 200) || !(moveY <= 500 && moveY >= 100) || !(moveToY <= 500 && moveToY >= 100)) {
             return;
         }
@@ -68,7 +66,6 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         moveToX = (moveToX - 200) / 50;
         moveY = (moveY - 100) / 50;
         moveToY= (moveToY - 100) / 50;
-        System.out.println(moveY + ", " + moveX + ", " + moveToY + ", " + moveToX);
         game.move(new Location(moveY, moveX, moveToY, moveToX), boardStatus);
     }
 
@@ -101,6 +98,4 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     public void mouseMoved(MouseEvent e) {
 
     }
-
-
 }
