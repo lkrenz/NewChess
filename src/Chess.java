@@ -112,6 +112,7 @@ public class Chess {
                 makeMove(l);
             }
         }
+        window.repaint();
     }
     public static void main(String[] args) {
         Chess game = new Chess();

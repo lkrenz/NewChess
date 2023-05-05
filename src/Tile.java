@@ -49,9 +49,17 @@ public class Tile {
         piece.getMoves(moves);
     }
 
+    /**
+     *  Need to fix this, ask Mr. Blick about sub
+     * @param controls
+     */
     public void getControlled(ArrayList<Location> controls) {
-        piece.setControlled();
-
+        if (piece instanceof King || piece instanceof Pawn) {
+            piece.setControlled();
+        }
+        else {
+            piece.findMoves();
+        }
         piece.getControlled(controls);
     }
 
