@@ -61,7 +61,7 @@ public class Board {
         board[7][4] = new Tile(new Queen(7, 3, 1, this, images[10]));
         whitePieces.add(new Location(7,3));
         board[7][3] = new Tile(new King(7,4,1, this, images[11]));
-        whitePieces.add(new Location(7,4));
+        whitePieces.add(0, new Location(7,4));
     }
 
     public void instantiatePieces() {
@@ -205,7 +205,6 @@ public class Board {
         Location moveTo = new Location(row, col);
         if (board[row][col].hasPiece()) {
             if (board[row][col].getPiece().getColor() != color) {
-                System.out.println(row + ", " + col);
                 return true;
             }
             return false;
@@ -229,9 +228,17 @@ public class Board {
     }
 
     // Need to figure out how to share the information to the front end
-//    public void promote(int row, int col, int color) {
-//        int promo = window.getPromotion(int color);
-//    }
+    public void promote(int row, int col, int color) {
+        int promo = window.getPromotion(int color);
+    }
+
+    public boolean isPromotion(Location move) {
+        if (move.getToRow() == 0 || move.getToRow() == 8) {
+            if (board[move.getRow()][move.getCol()] instanceof Pawn) {
+                if (board)
+            }
+        }
+    }
 
     public void drawOptions(Graphics g, int color) {
         g.drawImage(images[4 + color * 6], 700, 100, window);
@@ -244,8 +251,11 @@ public class Board {
         findBlackControls();
         for(Location l : blackControls) {
             if (l.equals(whitePieces.get(0))) {
-                System.out.println("You checked boi");
+                System.out.println("You checked");
                 return true;
+            }
+            else if (l.getRow() == whitePieces.get(0).getRow()) {
+                System.out.println("Row match: " + l.getCol() + whitePieces.get(0).getCol());
             }
         }
         return false;

@@ -95,34 +95,7 @@ public class Queen extends Piece{
         findDiagonals(moves, dRow, dCol, row + dRow, col + dCol);
     }
 
-    public void findHorizontals(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
-        if (getBoard().getBoard()[row][col].hasPiece()) {
-            if (getBoard().canMove(getColor(), row, col)) {
-                moves.add(new Location(row, col));
-                return;
-            }
-            return;
-        }
-        if (dRow != 0) {
-            if (row == 7 && dRow > 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-            if (row == 0 && dRow < 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-        }
-        else {
-            if (col == 7 && dCol > 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-            if (col == 0 && dCol < 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-        }
-        findHorizontals(moves, dRow, dCol, row + dRow, col + dCol);
+    public void resetControlled() {
+        findMoves();
     }
 }

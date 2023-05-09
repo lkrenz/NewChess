@@ -74,6 +74,13 @@ public class Chess {
         return true;
     }
 
+    public boolean isPromotion(Location move) {
+        if (board.getBoard().isPromotion(move)) {
+            return true;
+        }
+        return false;
+    }
+
 //    public boolean checkBlackMove(Location move) {
 //        if (!board.getBlackMoves().contains(move)) {
 //            return false;

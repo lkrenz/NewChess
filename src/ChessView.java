@@ -75,7 +75,11 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
             moveX = (moveX - 200) / 50;
             moveToX = (moveToX - 200) / 50;
             moveY = (moveY - 100) / 50;
-            moveToY= (moveToY - 100) / 50;
+            moveToY = (moveToY - 100) / 50;
+            Location move = new Location(moveY, moveX, moveToY, moveToX);
+            if (game.isPromotion(move)) {
+
+            }
             game.move(new Location(moveY, moveX, moveToY, moveToX), boardStatus);
         }
     }

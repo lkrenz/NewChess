@@ -41,4 +41,8 @@ public class Knight extends Piece{
         }
         setMoves(moves);
     }
+
+    public void resetControlled() {
+        findMoves();
+    }
 }

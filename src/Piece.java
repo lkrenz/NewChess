@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.awt.*;
 public class Piece {
@@ -13,6 +14,8 @@ public class Piece {
         this.location = new Location(row, col);
         this.board = board;
         this.image = image;
+        this.moves = new ArrayList<>();
+        this.controlled = new ArrayList<>();
     }
     public boolean canPassant() {
         return false;
@@ -20,10 +23,6 @@ public class Piece {
 
     public Board getBoard() {
         return board;
-    }
-
-    public void resetControlled() {
-        findMoves();
     }
 
     public Image getImage() {
@@ -46,7 +45,9 @@ public class Piece {
         return color;
     }
 
-
+    public void resetControlled() {
+        System.out.println("Called");
+    }
     public boolean isFirstMove() {
         return false;
     }
@@ -59,7 +60,8 @@ public class Piece {
     }
 
     public void addControlled(ArrayList<Location> attacks) {
-        if (controlled != null) {
+        if (controlled.isEmpty()) {
+            System.out.println("Not null");
             for (Location l : controlled) {
                 attacks.add(l);
             }

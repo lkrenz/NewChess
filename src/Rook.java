@@ -23,33 +23,39 @@ public class Rook extends Piece{
     }
 
     public void getMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
-        if (getBoard().getBoard()[row][col].hasPiece()) {
-            if (getBoard().canMove(getColor(), row, col)) {
-                moves.add(new Location(row, col));
-                return;
-            }
+        if (row < 0 || row > 7 || col < 0 || col > 7)
             return;
-        }
-        if (dRow != 0) {
-            if (row == 7 && dRow > 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-            if (row == 0 && dRow < 0) {
-                moves.add(new Location(row, col));
+        if (dRow > 0) {
+            if (row + dRow > 7) {
                 return;
             }
         }
         else {
-            if (col == 7 && dCol > 0) {
-                moves.add(new Location(row, col));
-                return;
-            }
-            if (col == 0 && dCol < 0) {
-                moves.add(new Location(row, col));
+            if (row + dRow < 0) {
                 return;
             }
         }
+        if (dCol > 0) {
+            if (col + dCol > 7) {
+                return;
+            }
+        }
+        else {
+            if (col + dCol < 0) {
+                return;
+            }
+        }
+        if (getBoard().getBoard()[row + dRow][col + dCol].hasPiece()) {
+            if (getBoard().canMove(getColor(), row + dRow, col + dCol)) {
+                moves.add(new Location(row + dRow, col + dCol));
+            }
+            return;
+        }
+        moves.add(new Location(row + dRow, col + dCol));
         getMoves(moves, dRow, dCol, row + dRow, col + dCol);
+    }
+
+    public void resetControlled() {
+        findMoves();
     }
 }
