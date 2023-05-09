@@ -55,8 +55,7 @@ public class King extends Piece{
     }
 
     public void findMoves() {
-        ArrayList<Location> moves = new ArrayList<>();
-        moves = findControlled();
+        ArrayList<Location> moves = findControlled();
 
         ArrayList<Location> checkArr;
         if (getColor() == 1) {
@@ -67,16 +66,19 @@ public class King extends Piece{
         }
         int i = 0;
         while (i < moves.size()) {
-            if (checkArr.contains(moves.get(i))) {
-                moves.remove(i);
-                continue;
+            for (int j = 0; j < checkArr.size(); j++) {
+                if (checkArr.get(j).equals(moves.get(i))) {
+                    moves.remove(i);
+                    i--;
+                    break;
+                }
             }
             i++;
         }
         setMoves(moves);
     }
 
-    public void setControlled() {
+    public void resetControlled() {
         setControlled(findControlled());
     }
 }

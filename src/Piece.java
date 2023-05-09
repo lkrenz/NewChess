@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.awt.*;
 public class Piece {
@@ -21,6 +20,10 @@ public class Piece {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void resetControlled() {
+        findMoves();
     }
 
     public Image getImage() {
@@ -55,7 +58,7 @@ public class Piece {
         this.moves = moves;
     }
 
-    public void getControlled(ArrayList<Location> attacks) {
+    public void addControlled(ArrayList<Location> attacks) {
         if (controlled != null) {
             for (Location l : controlled) {
                 attacks.add(l);

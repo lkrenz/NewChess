@@ -12,32 +12,31 @@ public class Knight extends Piece{
     }
 
     public void findMoves() {
-        System.out.println("called");
         ArrayList<Location> moves = new ArrayList<>();
         int row = getRow();
         int col = getCol();
-        if (row + 2 < 7) {
-            if (col + 1 < 7)
+        if (row + 2 <= 7) {
+            if (col + 1 <= 7 && getBoard().canMove(getColor(), row + 2, col + 1))
                 moves.add(new Location(row + 2, col + 1));
-            if (col - 1 > 0)
+            if (col - 1 >= 0 && getBoard().canMove(getColor(), row + 2, col - 1))
                 moves.add(new Location(row + 2, col - 1));
         }
-        if (row - 2 > 0) {
-            if (col + 1 < 7)
+        if (row - 2 >= 0) {
+            if (col + 1 <= 7 && getBoard().canMove(getColor(), row - 2, col + 1))
                 moves.add(new Location(row - 2, col + 1));
-            if (col - 1 > 0)
+            if (col - 1 >= 0 && getBoard().canMove(getColor(), row - 2, col - 1))
                 moves.add(new Location(row - 2, col - 1));
         }
-        if (col + 2 < 7) {
-            if (row + 1 < 7)
+        if (col + 2 <= 7) {
+            if (row + 1 <= 7 && getBoard().canMove(getColor(), row + 1, col + 2))
                 moves.add(new Location(row + 1, col + 2));
-            if (row - 1 > 0)
+            if (row - 1 >= 0 && getBoard().canMove(getColor(), row - 1, col + 2))
                 moves.add(new Location(row - 1, col + 2));
         }
-        if (col - 2 > 0) {
-            if (row + 1 < 7)
+        if (col - 2 >= 0) {
+            if (row + 1 <= 7 && getBoard().canMove(getColor(), row + 1, col - 2))
                 moves.add(new Location(row + 1, col - 2));
-            if (row - 1 > 0)
+            if (row - 1 >= 0 && getBoard().canMove(getColor(), row - 1, col - 2))
                 moves.add(new Location(row - 1, col - 2));
         }
         setMoves(moves);

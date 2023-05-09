@@ -28,7 +28,7 @@ public class Tile {
 
     public boolean hasPiece() {
         if (piece != null) {
-            return false;
+            return true;
         }
         return false;
     }
@@ -54,17 +54,11 @@ public class Tile {
      * @param controls
      */
     public void getControlled(ArrayList<Location> controls) {
-        if (piece instanceof King || piece instanceof Pawn) {
-            piece.setControlled();
-        }
-        else {
-            piece.findMoves();
-        }
-        piece.getControlled(controls);
+        piece.resetControlled();
+        piece.addControlled(controls);
     }
 
     public void movePiece(Location l) {
-        System.out.println(hasPiece() + "");
         piece.move(l);
     }
 }

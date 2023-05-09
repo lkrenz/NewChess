@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Stack;
 
 public class Chess {
     private Board board;
@@ -58,9 +57,7 @@ public class Chess {
 
     public boolean checkWhiteMove(Location move) {
         board.findWhiteMoves();
-        board.printWhiteMoves();
         if (!board.whiteHas(move)) {
-            System.out.println("No good");
             return false;
         }
         Piece p = null;
@@ -69,22 +66,41 @@ public class Chess {
         }
         board.makeWhiteMove(move);
         if (board.isWhiteChecked()) {
+            board.undoWhiteMove(move, p);
+            System.out.println("Checked");
+            return false;
+        }
+        board.undoWhiteMove(move, p);
+        return true;
+    }
+
+//    public boolean checkBlackMove(Location move) {
+//        if (!board.getBlackMoves().contains(move)) {
+//            return false;
+//        }
+//        checkBoard = new Board(board);
+//        checkBoard.makeMove(move);
+//        if (checkBoard.isBlackChecked()) {
+//            return false;
+//        }
+//        return true;
+//    }
+
+    public boolean checkBlackMove(Location move) {
+        board.findBlackMoves();
+        if (!board.blackHas(move)) {
+            return false;
+        }
+        Piece p = null;
+        if (board.getBoard()[move.getToRow()][move.getToCol()].hasPiece()) {
+            p = board.getBoard()[move.getToRow()][move.getToCol()].getPiece();
+        }
+        board.makeBlackMove(move);
+        if (board.isBlackChecked()) {
             undoMove(move, p);
             return false;
         }
         undoMove(move, p);
-        return true;
-    }
-
-    public boolean checkBlackMove(Location move) {
-        if (!board.getBlackMoves().contains(move)) {
-            return false;
-        }
-        checkBoard = new Board(board);
-        checkBoard.makeMove(move);
-        if (checkBoard.isBlackChecked()) {
-            return false;
-        }
         return true;
     }
 
@@ -104,9 +120,6 @@ public class Chess {
             if (checkWhiteMove(l)) {
                 makeMove(l);
             }
-            else {
-                System.out.println("white check failed");
-            }
         }
         else {
             if (checkBlackMove(l)) {
@@ -114,6 +127,10 @@ public class Chess {
             }
         }
         window.repaint();
+    }
+
+    public Board getBoard() {
+        return board;
     }
     public static void main(String[] args) {
         Chess game = new Chess();

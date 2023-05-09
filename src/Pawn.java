@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Pawn extends Piece {
+    private boolean isFirstMove;
     public Pawn(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
+        isFirstMove = true;
     }
 
     public ArrayList<Location> findControls() {
@@ -20,7 +22,7 @@ public class Pawn extends Piece {
             }
             if (!getBoard().getBoard()[getRow() - 1][getCol()].hasPiece()) {
                 moves.add(new Location(getRow() - 1, getCol()));
-                if (isFirstMove() && !getBoard().getBoard()[getRow() - 2][getCol()].hasPiece()) {
+                if (isFirstMove && !getBoard().getBoard()[getRow() - 2][getCol()].hasPiece()) {
                     moves.add(new Location(getRow() - 2, getCol()));
                 }
             }
@@ -34,7 +36,7 @@ public class Pawn extends Piece {
             }
             if (!getBoard().getBoard()[getRow() + 1][getCol()].hasPiece()) {
                 moves.add(new Location(getRow() + 1, getCol()));
-                if (isFirstMove() && !getBoard().getBoard()[getRow() + 2][getCol()].hasPiece()) {
+                if (isFirstMove && !getBoard().getBoard()[getRow() + 2][getCol()].hasPiece()) {
                     moves.add(new Location(getRow() + 2, getCol()));
                 }
             }
@@ -57,7 +59,18 @@ public class Pawn extends Piece {
         return attacks;
     }
 
-    public void setControlled() {
+    @Override
+    public void move(Location l) {
+        super.move(l);
+        if (Math.abs(l.getToRow() - l.getRow()) >= 2) {
+            isFirstMove = false;
+        }
+//        if (getColor() == 1 && getRow() == 0) {
+//            getBoard().promote(getRow(), getCol(), getColor());
+//        }
+    }
+
+    public void resetControlled() {
         setControlled(findControlled());
     }
 }
