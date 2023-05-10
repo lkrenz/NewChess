@@ -5,6 +5,7 @@ public class Chess {
     private Board board;
     private Board checkBoard;
     private ChessView window;
+    private String winner;
 
     public Chess() {
         this.board = new Board();
@@ -57,6 +58,14 @@ public class Chess {
 
     public boolean checkWhiteMove(Location move) {
         board.findWhiteMoves();
+        if (board.getWhiteMoves().size() == 0) {
+            window.setGameOver(true);
+            if (board.isWhiteChecked()) {
+                winner = "Black";
+            }
+            winner = "Stalemate";
+            return false;
+        }
         if (!board.whiteHas(move)) {
             return false;
         }
@@ -75,26 +84,23 @@ public class Chess {
     }
 
     public boolean isPromotion(Location move) {
-        if (board.getBoard().isPromotion(move)) {
-            return true;
-        }
-        return false;
+        return board.isPromotion(move);
     }
 
-//    public boolean checkBlackMove(Location move) {
-//        if (!board.getBlackMoves().contains(move)) {
-//            return false;
-//        }
-//        checkBoard = new Board(board);
-//        checkBoard.makeMove(move);
-//        if (checkBoard.isBlackChecked()) {
-//            return false;
-//        }
-//        return true;
-//    }
+    public String getWinner() {
+        return winner;
+    }
 
     public boolean checkBlackMove(Location move) {
         board.findBlackMoves();
+        if (board.getBlackMoves().size() == 0) {
+            window.setGameOver(true);
+            if (board.isBlackChecked()) {
+                winner = "Black";
+            }
+            winner = "Stalemate";
+            return false;
+        }
         if (!board.blackHas(move)) {
             return false;
         }
@@ -107,7 +113,7 @@ public class Chess {
             undoMove(move, p);
             return false;
         }
-        undoMove(move, p);
+        board.undoBlackMove(move, p);
         return true;
     }
 

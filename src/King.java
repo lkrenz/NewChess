@@ -56,18 +56,22 @@ public class King extends Piece{
 
     public void findMoves() {
         ArrayList<Location> moves = findControlled();
-
         ArrayList<Location> checkArr;
         if (getColor() == 1) {
+            getBoard().findBlackControls();
             checkArr = getBoard().getBlackControls();
         }
         else {
+            getBoard().findWhiteControls();
             checkArr = getBoard().getWhiteControls();
+        }
+        for (Location l : moves) {
+            System.out.println(l);
         }
         int i = 0;
         while (i < moves.size()) {
             for (int j = 0; j < checkArr.size(); j++) {
-                if (checkArr.get(j).equals(moves.get(i))) {
+                if (moves.get(i).equals(checkArr.get(j))) {
                     moves.remove(i);
                     i--;
                     break;

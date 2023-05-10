@@ -10,7 +10,6 @@ public class Board {
     private ArrayList<Location> whitePieces;
     private ArrayList<Location> blackPieces;
     private Image[] images;
-
     private ChessView window;
 
     public Board() {
@@ -99,6 +98,7 @@ public class Board {
     public void findBlackControls() {
         blackControls = new ArrayList<Location>();
         for (Location l : blackPieces) {
+            System.out.println(l);
             board[l.getRow()][l.getCol()].getControlled(blackControls);
         }
     }
@@ -155,12 +155,24 @@ public class Board {
     public void makeMove(Location location) {
         Location moveTo = new Location(location.getToRow(), location.getToCol());
         if (board[moveTo.getRow()][moveTo.getCol()].hasPiece()) {
-            for (int i = 0; i < blackPieces.size(); i++) {
-                if (moveTo.equals(blackPieces.get(i))) {
-                    blackPieces.remove(i);
-                    break;
+            if (board[moveTo.getRow()][moveTo.getCol()].getPiece().getColor() == 0) {
+                for (int i = 0; i < blackPieces.size(); i++) {
+                    if (moveTo.equals(blackPieces.get(i))) {
+                        System.out.println("By bye");
+                        blackPieces.remove(i);
+                        break;
+                    }
                 }
             }
+            else {
+                for (int i = 0; i < whitePieces.size(); i++) {
+                    if (moveTo.equals(whitePieces.get(i))) {
+                        whitePieces.remove(i);
+                        break;
+                    }
+                }
+            }
+
         }
         board[location.getToRow()][location.getToCol()].setPiece(board[location.getRow()][location.getCol()].removePiece());
         window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
@@ -178,14 +190,6 @@ public class Board {
         makeMove(location);
     }
 
-    public void undoWhiteMove(Location move, Piece p) {
-        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
-        if (p != null) {
-            getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
-            whitePieces.add(new Location(move.getToRow(), move.getToCol()));
-        }
-    }
-
     public void makeBlackMove(Location location) {
         Location moveOrigin = new Location(location.getRow(), location.getCol());
         for (int i = 0; i < blackPieces.size(); i++) {
@@ -195,6 +199,25 @@ public class Board {
             }
         }
         makeMove(location);
+        for (Location l : blackPieces) {
+            System.out.println(l);
+        }
+    }
+
+    public void undoWhiteMove(Location move, Piece p) {
+        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+        if (p != null) {
+            getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
+            whitePieces.add(new Location(move.getToRow(), move.getToCol()));
+        }
+    }
+
+    public void undoBlackMove(Location move, Piece p) {
+        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+        if (p != null) {
+            getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
+            blackPieces.add(new Location(move.getToRow(), move.getToCol()));
+        }
     }
 
     public void drawWhiteBoard(Graphics g) {
@@ -228,16 +251,80 @@ public class Board {
     }
 
     // Need to figure out how to share the information to the front end
-    public void promote(int row, int col, int color) {
-        int promo = window.getPromotion(int color);
-    }
+//    public void promote(int row, int col, int color) {
+//        int promo = window.getPromotion(int color);
+//    }
 
     public boolean isPromotion(Location move) {
-        if (move.getToRow() == 0 || move.getToRow() == 8) {
-            if (board[move.getRow()][move.getCol()] instanceof Pawn) {
-                if (board)
+        findBlackMoves();
+        if (board[move.getRow()][move.getCol()].getPiece().getColor() == 0) {
+            findBlackMoves();
+            if (!blackHas(move)) {
+                return false;
             }
         }
+        else {
+            findWhiteMoves();
+            if (!whiteHas(move)) {
+                return false;
+            }
+        }
+        if (move.getToRow() == 0 || move.getToRow() == 7) {
+            if (board[move.getRow()][move.getCol()].getPiece() instanceof Pawn) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void promote(Location move, int choice, int status) {
+        Piece p = null;
+        if (choice == 1) {
+            p = new Queen(move.getToRow(), move.getToCol(), status, this, images[4 + status * 6]);
+        }
+        else if (choice == 2) {
+            p = new Rook(move.getToRow(), move.getToCol(), status, this, images[1 + status * 6]);
+        }
+        else if (choice == 3) {
+            p = new Knight(move.getToRow(), move.getToCol(), status, this, images[2 + status * 6]);
+        }
+        else if (choice == 4) {
+            p = new Bishop(move.getToRow(), move.getToCol(), status, this, images[3 + status * 6]);
+        }
+
+        board[move.getToRow()][move.getToCol()].setPiece(p);
+        board[move.getRow()][move.getCol()].removePiece();
+        Location moveOrigin = new Location(move.getRow(), move.getCol());
+        Location moveDestination = new Location(move.getToRow(), move.getToCol());
+        if (status == 1) {
+            for (int i = 0; i < whitePieces.size(); i++) {
+                if (moveOrigin.equals(whitePieces.get(i))) {
+                    whitePieces.set(i, new Location(move.getToRow(), move.getToCol()));
+                }
+            }
+            for (int i = 0; i < blackPieces.size(); i++) {
+                if (moveDestination.equals(blackPieces.get(i))) {
+                    blackPieces.remove(i);
+                }
+            }
+
+        }
+        else {
+            for (int i = 0; i < blackPieces.size(); i++) {
+                if (moveOrigin.equals(blackPieces.get(i))) {
+                    blackPieces.set(i, new Location(move.getToRow(), move.getToCol()));
+                }
+            }
+            for (int i = 0; i < whitePieces.size(); i++) {
+                if (moveDestination.equals(whitePieces.get(i))) {
+                    whitePieces.remove(i);
+                }
+            }
+        }
+        window.repaint();
+        window.setNeedPromotion(false);
+        window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+        window.repaint();
     }
 
     public void drawOptions(Graphics g, int color) {

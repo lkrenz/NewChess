@@ -15,6 +15,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     private int moveToY;
     private int boardStatus;
     private boolean needPromotion;
+    private boolean gameOver;
     public ChessView(Image boardImage, Chess game) {
         this.game = game;
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -26,6 +27,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         this.boardImage = boardImage;
         boardStatus = 1;
         needPromotion = false;
+        gameOver = false;
         repaint();
     }
 
@@ -35,12 +37,21 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
 
     public void paint(Graphics g) {
         g.setColor(Color.WHITE);
-        g.drawRect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        g.fillRect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
         drawBoard(g);
         game.drawPieces(g);
-        game.getBoard().drawOptions(g, boardStatus);
+        if (needPromotion) {
+            game.getBoard().drawOptions(g, boardStatus);
+        }
+        if (gameOver) {
+            String winner = game.getWinner();
+            g.drawString(winner + " wins!", WINDOW_WIDTH - (winner.length() + 6) / 2, WINDOW_HEIGHT / 2);
+        }
     }
 
+    public void setNeedPromotion(boolean needPromotion) {
+        this.needPromotion = needPromotion;
+    }
 
     public Location getMove() {
         return null;
@@ -49,9 +60,10 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     @Override
     public void mouseClicked(MouseEvent e) {
         if (needPromotion) {
-            if (e.getX() >= 700 && e.getX() <= 750 && e.getY() >= 100 && e.getY() <= 300) {
+            if (e.getX() >= 700 && e.getX() <= 750 && e.getY() >= 100 && e.getY() <= 400) {
                 int choice = (e.getY() - 100) / 50 + 1;
-
+                Location move = new Location(moveY, moveX, moveToY, moveToX);
+                game.getBoard().promote(move, choice, boardStatus);
             }
         }
     }
@@ -66,21 +78,27 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (!needPromotion) {
-            this.moveToX = e.getX();
-            this.moveToY = e.getY();
-            if (!(moveX <= 600 && moveX >= 200) || !(moveToX <= 600 && moveToX >= 200) || !(moveY <= 500 && moveY >= 100) || !(moveToY <= 500 && moveToY >= 100)) {
-                return;
-            }
-            moveX = (moveX - 200) / 50;
-            moveToX = (moveToX - 200) / 50;
-            moveY = (moveY - 100) / 50;
-            moveToY = (moveToY - 100) / 50;
-            Location move = new Location(moveY, moveX, moveToY, moveToX);
-            if (game.isPromotion(move)) {
+        if (!gameOver) {
+            if (!needPromotion) {
+                this.moveToX = e.getX();
+                this.moveToY = e.getY();
+                if (!(moveX <= 600 && moveX >= 200) || !(moveToX <= 600 && moveToX >= 200) || !(moveY <= 500 && moveY >= 100) || !(moveToY <= 500 && moveToY >= 100)) {
+                    return;
+                }
+                moveX = (moveX - 200) / 50;
+                moveToX = (moveToX - 200) / 50;
+                moveY = (moveY - 100) / 50;
+                moveToY = (moveToY - 100) / 50;
+                Location move = new Location(moveY, moveX, moveToY, moveToX);
+                if (game.isPromotion(move)) {
+                    needPromotion = true;
+                    repaint();
+                }
+                else {
+                    game.move(new Location(moveY, moveX, moveToY, moveToX), boardStatus);
+                }
 
             }
-            game.move(new Location(moveY, moveX, moveToY, moveToX), boardStatus);
         }
     }
 
@@ -93,6 +111,11 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
 //        this.needPromotion = true;
 //
 //    }
+
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 
     @Override
     public void mouseExited(MouseEvent e) {

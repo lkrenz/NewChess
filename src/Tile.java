@@ -49,10 +49,6 @@ public class Tile {
         piece.getMoves(moves);
     }
 
-    /**
-     *  Need to fix this, ask Mr. Blick about sub
-     * @param controls
-     */
     public void getControlled(ArrayList<Location> controls) {
         piece.resetControlled();
         piece.addControlled(controls);

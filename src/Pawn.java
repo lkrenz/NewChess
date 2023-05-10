@@ -65,9 +65,6 @@ public class Pawn extends Piece {
         if (Math.abs(l.getToRow() - l.getRow()) >= 2) {
             isFirstMove = false;
         }
-        if (getColor() == 1 && getRow() == 0) {
-            getBoard().promote(getRow(), getCol(), 1);
-        }
     }
 
     public void resetControlled() {
