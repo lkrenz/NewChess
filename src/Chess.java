@@ -131,12 +131,14 @@ public class Chess {
     public void move(Location l, int status) {
         if (status == 1) {
             if (checkWhiteMove(l)) {
-                makeMove(l);
+                board.makeWhiteMove(l);
+                window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
             }
         }
         else {
             if (checkBlackMove(l)) {
-                makeMove(l);
+                board.makeBlackMove(l);
+                window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
             }
         }
         window.repaint();

@@ -65,9 +65,6 @@ public class King extends Piece{
             getBoard().findWhiteControls();
             checkArr = getBoard().getWhiteControls();
         }
-        for (Location l : moves) {
-            System.out.println(l);
-        }
         int i = 0;
         while (i < moves.size()) {
             for (int j = 0; j < checkArr.size(); j++) {

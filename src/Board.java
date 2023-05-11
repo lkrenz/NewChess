@@ -57,9 +57,9 @@ public class Board {
         whitePieces.add(new Location(7,2));
         board[7][5] = new Tile(new Bishop(7,5,1, this, images[9]));
         whitePieces.add(new Location(7,5));
-        board[7][4] = new Tile(new Queen(7, 3, 1, this, images[10]));
+        board[7][4] = new Tile(new Queen(7, 3, 1, this, images[11]));
         whitePieces.add(new Location(7,3));
-        board[7][3] = new Tile(new King(7,4,1, this, images[11]));
+        board[7][3] = new Tile(new King(7,4,1, this, images[10]));
         whitePieces.add(0, new Location(7,4));
     }
 
@@ -98,7 +98,6 @@ public class Board {
     public void findBlackControls() {
         blackControls = new ArrayList<Location>();
         for (Location l : blackPieces) {
-            System.out.println(l);
             board[l.getRow()][l.getCol()].getControlled(blackControls);
         }
     }
@@ -158,7 +157,6 @@ public class Board {
             if (board[moveTo.getRow()][moveTo.getCol()].getPiece().getColor() == 0) {
                 for (int i = 0; i < blackPieces.size(); i++) {
                     if (moveTo.equals(blackPieces.get(i))) {
-                        System.out.println("By bye");
                         blackPieces.remove(i);
                         break;
                     }
@@ -175,7 +173,6 @@ public class Board {
 
         }
         board[location.getToRow()][location.getToCol()].setPiece(board[location.getRow()][location.getCol()].removePiece());
-        window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
     }
 
     // Changes the row and col stored in each piece
@@ -199,16 +196,19 @@ public class Board {
             }
         }
         makeMove(location);
-        for (Location l : blackPieces) {
-            System.out.println(l);
-        }
     }
 
     public void undoWhiteMove(Location move, Piece p) {
-        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+        Location moveTo = new Location(move.getToRow(), move.getToCol());
+        board[move.getRow()][move.getCol()].setPiece(board[move.getToRow()][move.getToCol()].removePiece());
+        for (int i = 0; i < whitePieces.size(); i++) {
+            if (whitePieces.get(i).equals(moveTo)) {
+                whitePieces.set(i, new Location(move.getRow(), move.getCol()));
+            }
+        }
         if (p != null) {
             getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
-            whitePieces.add(new Location(move.getToRow(), move.getToCol()));
+            blackPieces.add(new Location(move.getToRow(), move.getToCol()));
         }
     }
 
@@ -323,7 +323,7 @@ public class Board {
         }
         window.repaint();
         window.setNeedPromotion(false);
-        window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+//        window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
         window.repaint();
     }
 
@@ -336,6 +336,7 @@ public class Board {
 
     public boolean isWhiteChecked() {
         findBlackControls();
+        System.out.println(whitePieces.get(0));
         for(Location l : blackControls) {
             if (l.equals(whitePieces.get(0))) {
                 System.out.println("You checked");

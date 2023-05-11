@@ -45,6 +45,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         }
         if (gameOver) {
             String winner = game.getWinner();
+            g.drawRect(0,0,1000,1000);
             g.drawString(winner + " wins!", WINDOW_WIDTH - (winner.length() + 6) / 2, WINDOW_HEIGHT / 2);
         }
     }

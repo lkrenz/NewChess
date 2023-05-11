@@ -15,7 +15,7 @@ public class Piece {
         this.board = board;
         this.image = image;
         this.moves = new ArrayList<>();
-        this.controlled = new ArrayList<>();
+        this.controlled = null;
     }
     public boolean canPassant() {
         return false;
@@ -60,8 +60,7 @@ public class Piece {
     }
 
     public void addControlled(ArrayList<Location> attacks) {
-        if (controlled.isEmpty()) {
-            System.out.println("Not null");
+        if (controlled != null) {
             for (Location l : controlled) {
                 attacks.add(l);
             }
