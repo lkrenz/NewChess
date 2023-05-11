@@ -57,9 +57,9 @@ public class Board {
         whitePieces.add(new Location(7,2));
         board[7][5] = new Tile(new Bishop(7,5,1, this, images[9]));
         whitePieces.add(new Location(7,5));
-        board[7][4] = new Tile(new Queen(7, 3, 1, this, images[11]));
+        board[7][3] = new Tile(new Queen(7, 3, 1, this, images[10]));
         whitePieces.add(new Location(7,3));
-        board[7][3] = new Tile(new King(7,4,1, this, images[10]));
+        board[7][4] = new Tile(new King(7,4,1, this, images[11]));
         whitePieces.add(0, new Location(7,4));
     }
 
@@ -110,6 +110,158 @@ public class Board {
         }
     }
 
+    public boolean checkBlackCastle(Location move) {
+        if (!board[move.getRow()][move.getCol()].hasPiece()) {
+            return false;
+        }
+        if (!(board[move.getRow()][move.getCol()].getPiece() instanceof King)) {
+            return false;
+        }
+        if (move.getRow() != move.getToRow()) {
+            return false;
+        }
+        if (Math.abs(move.getToCol() - move.getCol()) != 2) {
+            return false;
+        }
+        if (move.getToCol() - move.getCol() > 0) {
+            if (!board[move.getRow()][7].hasPiece()) {
+                return false;
+            }
+            else {
+                if (!(board[move.getRow()][7].getPiece() instanceof Rook)) {
+                    return false;
+                }
+                if (!(board[move.getRow()][7].getPiece().isFirstMove())) {
+                    return false;
+                }
+            }
+        }
+        else {
+            if (!board[move.getRow()][0].hasPiece()) {
+                return false;
+            }
+            else {
+                if (!(board[move.getRow()][0].getPiece() instanceof Rook)) {
+                    return false;
+                }
+                if (!(board[move.getRow()][0].getPiece().isFirstMove())) {
+                    return false;
+                }
+            }
+        }
+        if (move.getToCol() > move.getCol()) {
+            if (board[move.getRow()][move.getCol() + 1].hasPiece() || board[move.getRow()][move.getCol() + 2].hasPiece()) {
+                return false;
+            }
+        }
+        else {
+            if (board[move.getRow()][move.getCol() - 1].hasPiece() || board[move.getRow()][move.getCol() - 2].hasPiece() || board[move.getRow()][move.getCol() - 3].hasPiece()) {
+                return false;
+            }
+        }
+        findWhiteControls();
+        if (isBlackChecked()) {
+            return false;
+        }
+        if (move.getToCol() > move.getCol()) {
+            if (doesWhiteControl(move.getRow(), move.getCol() + 1)) {
+                return false;
+            }
+            if (doesWhiteControl(move.getRow(), move.getCol() + 2)) {
+                return false;
+            }
+            makeBlackMove(new Location(move.getRow(), move.getCol(), move.getRow(), move.getCol() + 2));
+            makeBlackMove(new Location(move.getRow(), 7, move.getRow(), move.getCol() + 1));
+        }
+        else {
+            if (doesWhiteControl(move.getRow(), move.getCol() - 1)) {
+                return false;
+            }
+            if (doesWhiteControl(move.getRow(), move.getCol() - 2)) {
+                return false;
+            }
+            makeBlackMove(new Location(move.getRow(), move.getCol(), move.getRow(), move.getCol() - 2));
+            makeBlackMove(new Location(move.getRow(), 0, move.getRow(), move.getCol() - 1));
+        }
+        return true;
+    }
+
+    public boolean checkWhiteCastle(Location move) {
+        if (!board[move.getRow()][move.getCol()].hasPiece()) {
+            return false;
+        }
+        if (!(board[move.getRow()][move.getCol()].getPiece() instanceof King)) {
+            return false;
+        }
+        if (move.getRow() != move.getToRow()) {
+            return false;
+        }
+        if (Math.abs(move.getToCol() - move.getCol()) != 2) {
+            return false;
+        }
+        if (move.getToCol() - move.getCol() > 0) {
+            if (!board[move.getRow()][7].hasPiece()) {
+                return false;
+            }
+            else {
+                if (!(board[move.getRow()][7].getPiece() instanceof Rook)) {
+                    return false;
+                }
+                if (!(board[move.getRow()][7].getPiece().isFirstMove())) {
+                    return false;
+                }
+            }
+        }
+        else {
+            if (!board[move.getRow()][0].hasPiece()) {
+                return false;
+            }
+            else {
+                if (!(board[move.getRow()][0].getPiece() instanceof Rook)) {
+                    return false;
+                }
+                if (!(board[move.getRow()][0].getPiece().isFirstMove())) {
+                    return false;
+                }
+            }
+        }
+        if (move.getToCol() > move.getCol()) {
+            if (board[move.getRow()][move.getCol() + 1].hasPiece() || board[move.getRow()][move.getCol() + 2].hasPiece()) {
+                return false;
+            }
+        }
+        else {
+            if (board[move.getRow()][move.getCol() - 1].hasPiece() || board[move.getRow()][move.getCol() - 2].hasPiece() || board[move.getRow()][move.getCol() - 3].hasPiece()) {
+                return false;
+            }
+        }
+        findBlackControls();
+        if (isWhiteChecked()) {
+            return false;
+        }
+        if (move.getToCol() > move.getCol()) {
+            if (doesBlackControl(move.getRow(), move.getCol() + 1)) {
+                return false;
+            }
+            if (doesBlackControl(move.getRow(), move.getCol() + 2)) {
+                return false;
+            }
+            makeWhiteMove(new Location(move.getRow(), move.getCol(), move.getRow(), move.getCol() + 2));
+            makeWhiteMove(new Location(move.getRow(), 7, move.getRow(), move.getCol() + 1));
+        }
+        else {
+            if (doesBlackControl(move.getRow(), move.getCol() - 1)) {
+                return false;
+            }
+            if (doesBlackControl(move.getRow(), move.getCol() - 2)) {
+                return false;
+            }
+            makeWhiteMove(new Location(move.getRow(), move.getCol(), move.getRow(), move.getCol() - 2));
+            makeWhiteMove(new Location(move.getRow(), 0, move.getRow(), move.getCol() - 1));
+        }
+        return true;
+    }
+
     public void findBlackMoves() {
         blackMoves = new ArrayList<>();
         findWhiteControls();
@@ -118,10 +270,62 @@ public class Board {
         }
     }
 
-    public void printWhiteMoves() {
-        for (Location l : whiteMoves) {
-            System.out.println(l);
+    public boolean isWhiteCheckMated() {
+        if (!isWhiteChecked()) {
+            return false;
         }
+        for (int i = 0; i < whiteMoves.size(); i++) {
+            Piece p = null;
+            Location move = whiteMoves.get(i);
+            if (board[move.getToRow()][move.getToCol()].hasPiece()) {
+                p = board[move.getToRow()][move.getToCol()].getPiece();
+            }
+            makeWhiteMove(move);
+            if (!isWhiteChecked()) {
+                undoWhiteMove(move, p);
+                return false;
+            }
+            undoWhiteMove(move, p);
+        }
+        return true;
+    }
+
+    public boolean isBlackCheckMated() {
+        if (!isBlackChecked()) {
+            return false;
+        }
+        for (int i = 0; i < blackMoves.size(); i++) {
+            Piece p = null;
+            Location move = blackMoves.get(i);
+            if (board[move.getToRow()][move.getToCol()].hasPiece()) {
+                p = board[move.getToRow()][move.getToCol()].getPiece();
+            }
+            makeBlackMove(move);
+            if (!isBlackChecked()) {
+                undoBlackMove(move, p);
+                return false;
+            }
+            undoBlackMove(move, p);
+        }
+        return true;
+    }
+
+    public boolean doesBlackControl(int row, int col) {
+        for (int i = 0; i < blackControls.size(); i++) {
+            if (blackControls.get(i).getRow() == row && blackControls.get(i).getCol() == col) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean doesWhiteControl(int row, int col) {
+        for (int i = 0; i < whiteControls.size(); i++) {
+            if (whiteControls.get(i).getRow() == row && whiteControls.get(i).getCol() == col) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void findWhiteControls() {
@@ -178,9 +382,9 @@ public class Board {
     // Changes the row and col stored in each piece
     public void makeWhiteMove(Location location) {
         Location moveOrigin = new Location(location.getRow(), location.getCol());
+        board[moveOrigin.getRow()][moveOrigin.getCol()].movePiece(new Location(location.getToRow(), location.getToCol()));
         for (int i = 0; i < whitePieces.size(); i++) {
             if (whitePieces.get(i).equals(moveOrigin)) {
-                board[moveOrigin.getRow()][moveOrigin.getCol()].movePiece(new Location(location.getToRow(), location.getToCol()));
                 whitePieces.set(i, new Location(location.getToRow(), location.getToCol()));
             }
         }
@@ -213,12 +417,26 @@ public class Board {
     }
 
     public void undoBlackMove(Location move, Piece p) {
-        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+        Location moveTo = new Location(move.getToRow(), move.getToCol());
+        board[move.getRow()][move.getCol()].setPiece(board[move.getToRow()][move.getToCol()].removePiece());
+        for (int i = 0; i < blackPieces.size(); i++) {
+            if (blackPieces.get(i).equals(moveTo)) {
+                blackPieces.set(i, new Location(move.getRow(), move.getCol()));
+            }
+        }
         if (p != null) {
             getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
-            blackPieces.add(new Location(move.getToRow(), move.getToCol()));
+            whitePieces.add(new Location(move.getToRow(), move.getToCol()));
         }
     }
+
+//    public void undoBlackMove(Location move, Piece p) {
+//        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
+//        if (p != null) {
+//            getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
+//            blackPieces.add(new Location(move.getToRow(), move.getToCol()));
+//        }
+//    }
 
     public void drawWhiteBoard(Graphics g) {
         return;
@@ -336,14 +554,10 @@ public class Board {
 
     public boolean isWhiteChecked() {
         findBlackControls();
-        System.out.println(whitePieces.get(0));
         for(Location l : blackControls) {
             if (l.equals(whitePieces.get(0))) {
                 System.out.println("You checked");
                 return true;
-            }
-            else if (l.getRow() == whitePieces.get(0).getRow()) {
-                System.out.println("Row match: " + l.getCol() + whitePieces.get(0).getCol());
             }
         }
         return false;
@@ -351,8 +565,12 @@ public class Board {
 
     public boolean isBlackChecked() {
         findWhiteControls();
-        if (whiteControls.indexOf(blackPieces.get(0)) != -1)
-            return true;
+        for(Location l : whiteControls) {
+            if (l.equals(blackPieces.get(0))) {
+                System.out.println("You checked");
+                return true;
+            }
+        }
         return false;
     }
 

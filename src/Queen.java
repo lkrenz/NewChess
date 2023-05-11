@@ -14,55 +14,18 @@ public class Queen extends Piece{
         int row = getRow();
         int col = getCol();
         ArrayList<Location> moves = new ArrayList<>();
-        findDiagonals(moves, 1, 1, row, col);
-        findDiagonals(moves, -1, -1, row, col);
-        findDiagonals(moves, -1, 1, row, col);
-        findDiagonals(moves, 1, -1, row, col);
-        findDiagonals(moves, 1, 0, row, col);
-        findDiagonals(moves, 0, 1, row, col);
-        findDiagonals(moves, -1, 0, row, col);
-        findDiagonals(moves, 0, -1, row, col);
+        addMoves(moves, 1, 1, row, col);
+        addMoves(moves, -1, -1, row, col);
+        addMoves(moves, -1, 1, row, col);
+        addMoves(moves, 1, -1, row, col);
+        addMoves(moves, 1, 0, row, col);
+        addMoves(moves, 0, 1, row, col);
+        addMoves(moves, -1, 0, row, col);
+        addMoves(moves, 0, -1, row, col);
         setMoves(moves);
     }
 
-//    public void findDiagonals(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
-//        if (row < 0 || row > 7 || col < 0 || col > 7)
-//            return;
-//        if (getBoard().getBoard()[row][col].hasPiece()) {
-//            if (getBoard().canMove(getColor(), row, col)) {
-//                moves.add(new Location(row, col));
-//            }
-//            return;
-//        }
-//        if (dRow > 0) {
-//            if (row == 7) {
-//                moves.add(new Location(row, col));
-//                return;
-//            }
-//        }
-//        else {
-//            if (row == 0) {
-//                moves.add(new Location(row, col));
-//                return;
-//            }
-//        }
-//        if (dCol > 0) {
-//            if (col == 7) {
-//                moves.add(new Location(row, col));
-//                return;
-//            }
-//        }
-//        else {
-//            if (col == 0) {
-//                moves.add(new Location(row, col));
-//                return;
-//            }
-//        }
-//        moves.add(new Location(row, col));
-//        findDiagonals(moves, dRow, dCol, row + dRow, col + dCol);
-//    }
-
-    public void findDiagonals(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
+    public void addMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
         if (row < 0 || row > 7 || col < 0 || col > 7)
             return;
         if (dRow > 0) {
@@ -92,7 +55,7 @@ public class Queen extends Piece{
             return;
         }
         moves.add(new Location(row + dRow, col + dCol));
-        findDiagonals(moves, dRow, dCol, row + dRow, col + dCol);
+        addMoves(moves, dRow, dCol, row + dRow, col + dCol);
     }
 
     public void resetControlled() {

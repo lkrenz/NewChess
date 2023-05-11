@@ -58,15 +58,10 @@ public class Chess {
 
     public boolean checkWhiteMove(Location move) {
         board.findWhiteMoves();
-        if (board.getWhiteMoves().size() == 0) {
-            window.setGameOver(true);
-            if (board.isWhiteChecked()) {
-                winner = "Black";
-            }
-            winner = "Stalemate";
-            return false;
-        }
         if (!board.whiteHas(move)) {
+            if (board.checkWhiteCastle(move)) {
+                window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+            }
             return false;
         }
         Piece p = null;
@@ -102,6 +97,9 @@ public class Chess {
             return false;
         }
         if (!board.blackHas(move)) {
+            if (board.checkBlackCastle(move)) {
+                window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+            }
             return false;
         }
         Piece p = null;
@@ -110,18 +108,11 @@ public class Chess {
         }
         board.makeBlackMove(move);
         if (board.isBlackChecked()) {
-            undoMove(move, p);
+            board.undoBlackMove(move, p);
             return false;
         }
         board.undoBlackMove(move, p);
         return true;
-    }
-
-    public void undoMove(Location move, Piece p) {
-        board.makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
-        if (p != null) {
-            board.getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
-        }
     }
 
     public void drawPieces(Graphics g) {
@@ -133,12 +124,20 @@ public class Chess {
             if (checkWhiteMove(l)) {
                 board.makeWhiteMove(l);
                 window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+                if (board.isBlackCheckMated()) {
+                    window.setGameOver(true);
+                    winner = "white";
+                }
             }
         }
         else {
             if (checkBlackMove(l)) {
                 board.makeBlackMove(l);
                 window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
+                if (board.isWhiteCheckMated()) {
+                    window.setGameOver(true);
+                    winner = "black";
+                }
             }
         }
         window.repaint();

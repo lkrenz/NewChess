@@ -1,18 +1,29 @@
+import com.sun.security.jgss.GSSUtil;
+
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class King extends Piece{
+    private boolean isFirstMove;
 
     public King(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
+        isFirstMove = true;
     }
 
     public boolean checkMove(Location location) {
         return false;
     }
 
-    public void makeMove(Location location) {
-        return;
+    public boolean isFirstMove() {
+        return isFirstMove;
+    }
+
+    public void move(Location l) {
+        super.move(l);
+        if (isFirstMove) {
+            isFirstMove = false;
+        }
     }
 
     public King clone(Board board) {
@@ -67,6 +78,11 @@ public class King extends Piece{
         }
         int i = 0;
         while (i < moves.size()) {
+            System.out.println(moves.get(i));
+            if (!getBoard().canMove(getColor(), moves.get(i).getRow(), moves.get(i).getCol())) {
+                moves.remove(i);
+                continue;
+            }
             for (int j = 0; j < checkArr.size(); j++) {
                 if (moves.get(i).equals(checkArr.get(j))) {
                     moves.remove(i);
@@ -75,6 +91,10 @@ public class King extends Piece{
                 }
             }
             i++;
+        }
+        System.out.println("__________");
+        for (Location l : moves) {
+            System.out.println("King move: " + l);
         }
         setMoves(moves);
     }

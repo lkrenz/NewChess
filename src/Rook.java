@@ -3,8 +3,11 @@ import java.util.ArrayList;
 
 public class Rook extends Piece{
 
+    private boolean isFirstMove;
+
     public Rook(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
+        isFirstMove = true;
     }
 
     public Rook clone(Board board) {
@@ -20,6 +23,17 @@ public class Rook extends Piece{
         getMoves(moves, 0, 1, row, col);
         getMoves(moves, 0, -1, row, col);
         setMoves(moves);
+    }
+
+    public void move(Location l) {
+        super.move(l);
+        if (isFirstMove) {
+            isFirstMove = false;
+        }
+    }
+
+    public boolean isFirstMove() {
+        return isFirstMove;
     }
 
     public void getMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
