@@ -2,19 +2,13 @@ import java.awt.*;
 import java.util.ArrayList;
 public class Bishop extends Piece{
 
+    // Creates a new instance of a bishop
     public Bishop (int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
     }
 
-    public void makeMove(Location location) {
-        return;
-    }
-
-    public boolean checkMove (Location location) {
-        return false;
-    }
-
     // Adds all possible moves to new arraylist and returns it to super.
+    @Override
     public void findMoves() {
         ArrayList<Location> moves = new ArrayList<>();
         int row = getRow();
@@ -25,7 +19,6 @@ public class Bishop extends Piece{
         addMoves(moves, -1, -1, row, col);
         setMoves(moves);
     }
-
 
     // Recursively moves diagonally until hits edge of board or another piece, adding each location to moves.
     public void addMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
@@ -61,10 +54,7 @@ public class Bishop extends Piece{
         addMoves(moves, dRow, dCol, row + dRow, col + dCol);
     }
 
-    public Bishop clone(Board board) {
-        return new Bishop(getRow(), getCol(), getColor(), board, getImage());
-    }
-
+    @Override
     public void resetControlled() {
         findMoves();
     }

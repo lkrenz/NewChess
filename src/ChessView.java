@@ -7,8 +7,8 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     private static final int    WINDOW_WIDTH = 800,
                                 WINDOW_HEIGHT = 600,
                                 BOARD_DIMENSIONS = 400;
-    private Image boardImage;
-    private Chess game;
+    private final Image boardImage;
+    private final Chess game;
     private int moveX;
     private int moveY;
     private int moveToX;
@@ -16,6 +16,8 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
     private int boardStatus;
     private boolean needPromotion;
     private boolean gameOver;
+
+    // Creates a new window instance and sets phase variables to false
     public ChessView(Image boardImage, Chess game) {
         this.game = game;
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -31,10 +33,12 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         repaint();
     }
 
+    // Draws the board
     public void drawBoard(Graphics g) {
         g.drawImage(boardImage, 200, 100, BOARD_DIMENSIONS, BOARD_DIMENSIONS, this);
     }
 
+    // Wipes the screen and draws the board and pieces or win display screen
     public void paint(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -46,18 +50,20 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         if (gameOver) {
             String winner = game.getWinner();
             g.drawRect(0,0,1000,1000);
-            g.drawString(winner + " wins!", WINDOW_WIDTH - (winner.length() + 6) / 2, WINDOW_HEIGHT / 2);
+            g.setColor(Color.black);
+            g.setFont(g.getFont().deriveFont(100f));
+            g.drawString(winner + " wins!", 50, 300);
         }
     }
 
+    // Activates promotion phase of the game
     public void setNeedPromotion(boolean needPromotion) {
         this.needPromotion = needPromotion;
     }
 
-    public Location getMove() {
-        return null;
-    }
 
+
+    // Only activates if a promotion is needed to continue
     @Override
     public void mouseClicked(MouseEvent e) {
         if (needPromotion) {
@@ -69,6 +75,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         }
     }
 
+    // Inputs the starting point of the player's move
     @Override
     public void mousePressed(MouseEvent e) {
         if (!needPromotion) {
@@ -77,6 +84,7 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
         }
     }
 
+    // Takes the end of the user's move then checks if it is promotion
     @Override
     public void mouseReleased(MouseEvent e) {
         if (!gameOver) {
@@ -105,42 +113,27 @@ public class ChessView extends JFrame implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        return;
     }
-//    Need to share this info from the back end to here
-//    public int getPromotion(int color) {
-//        this.needPromotion = true;
-//
-//    }
 
-
+    // Activates the game over phase
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
-    }
-
-    public void moveMade() {
-        if (boardStatus == 1) {
-            boardStatus = 0;
-        }
-        else {
-            boardStatus = 1;
-        }
-        repaint();
+        return;
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        return;
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        return;
     }
 
     public int getBoardStatus() {

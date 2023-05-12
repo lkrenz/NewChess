@@ -1,33 +1,26 @@
-import com.sun.security.jgss.GSSUtil;
-
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class King extends Piece{
     private boolean isFirstMove;
 
+    // Creates a new king instance
     public King(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
         isFirstMove = true;
     }
 
-    public boolean checkMove(Location location) {
-        return false;
-    }
-
+    @Override
     public boolean isFirstMove() {
         return isFirstMove;
     }
 
+    // Sets is first move to false when move is made
+    @Override
     public void move(Location l) {
         super.move(l);
         if (isFirstMove) {
             isFirstMove = false;
         }
-    }
-
-    public King clone(Board board) {
-        return new King(getRow(), getCol(), getColor(), board, getImage());
     }
 
     // Adds all possible king moves then removes any that are controlled by the opposite color
@@ -65,6 +58,8 @@ public class King extends Piece{
         return moves;
     }
 
+    @Override
+    // finds all possible moves, removing those controlled by the other color
     public void findMoves() {
         ArrayList<Location> moves = findControlled();
         ArrayList<Location> checkArr;
@@ -78,7 +73,6 @@ public class King extends Piece{
         }
         int i = 0;
         while (i < moves.size()) {
-            System.out.println(moves.get(i));
             if (!getBoard().canMove(getColor(), moves.get(i).getRow(), moves.get(i).getCol())) {
                 moves.remove(i);
                 continue;
@@ -92,13 +86,10 @@ public class King extends Piece{
             }
             i++;
         }
-        System.out.println("__________");
-        for (Location l : moves) {
-            System.out.println("King move: " + l);
-        }
         setMoves(moves);
     }
 
+    @Override
     public void resetControlled() {
         setControlled(findControlled());
     }

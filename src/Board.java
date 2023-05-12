@@ -2,16 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 public class Board {
-    private Tile[][] board;
+    private final Tile[][] board;
     private ArrayList<Location> blackControls;
     private ArrayList<Location> whiteControls;
     private ArrayList<Location> whiteMoves;
     private ArrayList<Location> blackMoves;
-    private ArrayList<Location> whitePieces;
-    private ArrayList<Location> blackPieces;
-    private Image[] images;
+    private final ArrayList<Location> whitePieces;
+    private final ArrayList<Location> blackPieces;
+    private final Image[] images;
     private ChessView window;
 
+    // Instantiates a new chess game
     public Board() {
         this.board = new Tile[8][8];
         this.images = new Image[12];
@@ -63,6 +64,7 @@ public class Board {
         whitePieces.add(0, new Location(7,4));
     }
 
+    // Pulls piece images from resources
     public void instantiatePieces() {
         images[0] = new ImageIcon("Resources/Black pawn.png").getImage();
         images[1] = new ImageIcon("Resources/Black rook.png").getImage();
@@ -81,20 +83,8 @@ public class Board {
     public void setWindow(ChessView window) {
         this.window = window;
     }
-    public Board(Board b) {
-        this.board = new Tile[8][8];
-        this.whitePieces = new ArrayList<>();
-        this.blackPieces = new ArrayList<>();
-        this.whiteMoves = new ArrayList<>();
-        this.blackMoves = new ArrayList<>();
-        this.whiteControls = new ArrayList<>();
-        this.blackControls = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.board[i][j] = b.getBoard()[i][j].clone(this);
-            }
-        }
-    }
+
+    // Resets the arraylist of black controlled squares
     public void findBlackControls() {
         blackControls = new ArrayList<Location>();
         for (Location l : blackPieces) {
@@ -102,6 +92,7 @@ public class Board {
         }
     }
 
+    // Resets the arraylist of white moves
     public void findWhiteMoves() {
         whiteMoves = new ArrayList<>();
         findBlackControls();
@@ -110,19 +101,25 @@ public class Board {
         }
     }
 
+    // Checks whether or not the inputted move is a successful castle for black
     public boolean checkBlackCastle(Location move) {
+        // Checks if the initial square has a piece
         if (!board[move.getRow()][move.getCol()].hasPiece()) {
             return false;
         }
+        // Insures the piece is a king
         if (!(board[move.getRow()][move.getCol()].getPiece() instanceof King)) {
             return false;
         }
+        // Castle moves always remain in the same row
         if (move.getRow() != move.getToRow()) {
             return false;
         }
+        // Checks if the move travels more than two squares
         if (Math.abs(move.getToCol() - move.getCol()) != 2) {
             return false;
         }
+        // Checks if the rook that would be castled is available
         if (move.getToCol() - move.getCol() > 0) {
             if (!board[move.getRow()][7].hasPiece()) {
                 return false;
@@ -149,6 +146,7 @@ public class Board {
                 }
             }
         }
+        // Checks if any of the spaces between the rook and king are occupied
         if (move.getToCol() > move.getCol()) {
             if (board[move.getRow()][move.getCol() + 1].hasPiece() || board[move.getRow()][move.getCol() + 2].hasPiece()) {
                 return false;
@@ -159,6 +157,7 @@ public class Board {
                 return false;
             }
         }
+        // Checks if any of the spaces are controlled
         findWhiteControls();
         if (isBlackChecked()) {
             return false;
@@ -186,6 +185,7 @@ public class Board {
         return true;
     }
 
+    // Carries out the same checks as the black castle, but for white
     public boolean checkWhiteCastle(Location move) {
         if (!board[move.getRow()][move.getCol()].hasPiece()) {
             return false;
@@ -262,6 +262,7 @@ public class Board {
         return true;
     }
 
+    // Iterates through black pieces to update their possible moves
     public void findBlackMoves() {
         blackMoves = new ArrayList<>();
         findWhiteControls();
@@ -270,10 +271,13 @@ public class Board {
         }
     }
 
+    // Checks if any of whites moves would get them out of check
     public boolean isWhiteCheckMated() {
+        findWhiteMoves();
         if (!isWhiteChecked()) {
             return false;
         }
+        // Iterates through whites moves, checking if they would protect the white king
         for (int i = 0; i < whiteMoves.size(); i++) {
             Piece p = null;
             Location move = whiteMoves.get(i);
@@ -283,6 +287,7 @@ public class Board {
             makeWhiteMove(move);
             if (!isWhiteChecked()) {
                 undoWhiteMove(move, p);
+                System.out.println(move);
                 return false;
             }
             undoWhiteMove(move, p);
@@ -290,7 +295,9 @@ public class Board {
         return true;
     }
 
+    // Checks all of black's moves to see if they would get them out of check
     public boolean isBlackCheckMated() {
+        findBlackMoves();
         if (!isBlackChecked()) {
             return false;
         }
@@ -310,6 +317,7 @@ public class Board {
         return true;
     }
 
+    // Returns true if the inputted square is controlled by black
     public boolean doesBlackControl(int row, int col) {
         for (int i = 0; i < blackControls.size(); i++) {
             if (blackControls.get(i).getRow() == row && blackControls.get(i).getCol() == col) {
@@ -319,6 +327,7 @@ public class Board {
         return false;
     }
 
+    // Returns true if the inputted square is controlled by white
     public boolean doesWhiteControl(int row, int col) {
         for (int i = 0; i < whiteControls.size(); i++) {
             if (whiteControls.get(i).getRow() == row && whiteControls.get(i).getCol() == col) {
@@ -328,6 +337,7 @@ public class Board {
         return false;
     }
 
+    // Iterates through white's pieces to update controls
     public void findWhiteControls() {
         whiteControls = new ArrayList<>();
         for (Location l : whitePieces) {
@@ -335,6 +345,7 @@ public class Board {
         }
     }
 
+    // Checks if the inputted move is possible for white
     public boolean whiteHas(Location l) {
         for (Location move : whiteMoves) {
             if (move.equals(l)) {
@@ -344,6 +355,7 @@ public class Board {
         return false;
     }
 
+    // Checks if the inputted move is possible for black
     public boolean blackHas(Location l) {
         for (Location move : blackMoves) {
             if (move.equals(l)) {
@@ -379,7 +391,7 @@ public class Board {
         board[location.getToRow()][location.getToCol()].setPiece(board[location.getRow()][location.getCol()].removePiece());
     }
 
-    // Changes the row and col stored in each piece
+    // Changes the row and col stored in each piece then calls makeMove()
     public void makeWhiteMove(Location location) {
         Location moveOrigin = new Location(location.getRow(), location.getCol());
         board[moveOrigin.getRow()][moveOrigin.getCol()].movePiece(new Location(location.getToRow(), location.getToCol()));
@@ -391,6 +403,7 @@ public class Board {
         makeMove(location);
     }
 
+    // Changes the row and col stored in a piece then moves it on the board
     public void makeBlackMove(Location location) {
         Location moveOrigin = new Location(location.getRow(), location.getCol());
         for (int i = 0; i < blackPieces.size(); i++) {
@@ -402,8 +415,10 @@ public class Board {
         makeMove(location);
     }
 
+    // Resets the moved piece to its original position and if necessary places the removed piece back
     public void undoWhiteMove(Location move, Piece p) {
         Location moveTo = new Location(move.getToRow(), move.getToCol());
+        board[moveTo.getRow()][moveTo.getCol()].movePiece(new Location(move.getRow(), move.getCol()));
         board[move.getRow()][move.getCol()].setPiece(board[move.getToRow()][move.getToCol()].removePiece());
         for (int i = 0; i < whitePieces.size(); i++) {
             if (whitePieces.get(i).equals(moveTo)) {
@@ -416,8 +431,10 @@ public class Board {
         }
     }
 
+    // Resets the moved piece to its original position and if necessary place the removed piece back
     public void undoBlackMove(Location move, Piece p) {
         Location moveTo = new Location(move.getToRow(), move.getToCol());
+        board[moveTo.getRow()][moveTo.getCol()].movePiece(new Location(move.getRow(), move.getCol()));
         board[move.getRow()][move.getCol()].setPiece(board[move.getToRow()][move.getToCol()].removePiece());
         for (int i = 0; i < blackPieces.size(); i++) {
             if (blackPieces.get(i).equals(moveTo)) {
@@ -430,33 +447,16 @@ public class Board {
         }
     }
 
-//    public void undoBlackMove(Location move, Piece p) {
-//        makeMove(new Location(move.getToRow(), move.getToCol(), move.getRow(), move.getCol()));
-//        if (p != null) {
-//            getBoard()[move.getToRow()][move.getToCol()].setPiece(p);
-//            blackPieces.add(new Location(move.getToRow(), move.getToCol()));
-//        }
-//    }
 
-    public void drawWhiteBoard(Graphics g) {
-        return;
-    }
-
+    // Returns true if a piece of color color can move to row col
     public boolean canMove(int color, int row, int col) {
-        Location moveTo = new Location(row, col);
         if (board[row][col].hasPiece()) {
-            if (board[row][col].getPiece().getColor() != color) {
-                return true;
-            }
-            return false;
+            return board[row][col].getPiece().getColor() != color;
         }
-            return true;
+        return true;
     }
 
-    public void drawBlackBoard(Graphics g) {
-        return;
-    }
-
+    // Iterates through the pieces drawing out each image
     public void drawPieces(Graphics g) {
         for (Location l : whitePieces) {
             Image i = board[l.getRow()][l.getCol()].getPiece().getImage();
@@ -468,11 +468,7 @@ public class Board {
         }
     }
 
-    // Need to figure out how to share the information to the front end
-//    public void promote(int row, int col, int color) {
-//        int promo = window.getPromotion(int color);
-//    }
-
+    // Checks the move to see if it would promote a pawn
     public boolean isPromotion(Location move) {
         findBlackMoves();
         if (board[move.getRow()][move.getCol()].getPiece().getColor() == 0) {
@@ -488,13 +484,12 @@ public class Board {
             }
         }
         if (move.getToRow() == 0 || move.getToRow() == 7) {
-            if (board[move.getRow()][move.getCol()].getPiece() instanceof Pawn) {
-                return true;
-            }
+            return board[move.getRow()][move.getCol()].getPiece() instanceof Pawn;
         }
         return false;
     }
 
+    // Takes the users choice and promotes their piece if possible
     public void promote(Location move, int choice, int status) {
         Piece p = null;
         if (choice == 1) {
@@ -509,7 +504,7 @@ public class Board {
         else if (choice == 4) {
             p = new Bishop(move.getToRow(), move.getToCol(), status, this, images[3 + status * 6]);
         }
-
+        // Updates the location of the changed piece and type
         board[move.getToRow()][move.getToCol()].setPiece(p);
         board[move.getRow()][move.getCol()].removePiece();
         Location moveOrigin = new Location(move.getRow(), move.getCol());
@@ -539,12 +534,13 @@ public class Board {
                 }
             }
         }
+        // Resets the board to its normal state
         window.repaint();
         window.setNeedPromotion(false);
-//        window.setBoardStatus(Math.abs(window.getBoardStatus() - 1));
         window.repaint();
     }
 
+    // Draws out the options for promotion
     public void drawOptions(Graphics g, int color) {
         g.drawImage(images[4 + color * 6], 700, 100, window);
         g.drawImage(images[1 + color * 6], 700, 150, window);
@@ -552,6 +548,7 @@ public class Board {
         g.drawImage(images[3 + color * 6], 700, 250, window);
     }
 
+    // Returns true if the white king is currently attacked
     public boolean isWhiteChecked() {
         findBlackControls();
         for(Location l : blackControls) {
@@ -563,6 +560,7 @@ public class Board {
         return false;
     }
 
+    // Returns true if the black king is attacked
     public boolean isBlackChecked() {
         findWhiteControls();
         for(Location l : whiteControls) {
@@ -582,24 +580,7 @@ public class Board {
         return whiteControls;
     }
 
-    public ArrayList<Location> getWhiteMoves() {
-        return whiteMoves;
-    }
-
-    public ArrayList<Location> getBlackMoves() {
-        return blackMoves;
-    }
-
-    public ArrayList<Location> getWhitePieces() {
-        return whitePieces;
-    }
-
-    public ArrayList<Location> getBlackPieces() {
-        return blackPieces;
-    }
-
     public Tile[][] getBoard() {
         return board;
     }
-
 }

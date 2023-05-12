@@ -3,14 +3,13 @@ import java.util.ArrayList;
 
 public class Knight extends Piece{
 
+    // Creates a new knight instance
     public Knight (int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
     }
 
-    public Knight clone(Board board) {
-        return new Knight(getRow(), getCol(), getColor(), board, getImage());
-    }
-
+    // Finds every possible location the knight can move
+    @Override
     public void findMoves() {
         ArrayList<Location> moves = new ArrayList<>();
         int row = getRow();
@@ -42,6 +41,7 @@ public class Knight extends Piece{
         setMoves(moves);
     }
 
+    @Override
     public void resetControlled() {
         findMoves();
     }

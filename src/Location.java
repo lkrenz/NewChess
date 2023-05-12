@@ -1,9 +1,10 @@
 public class Location {
-    private int row;
-    private int col;
-    private int toRow;
-    private int toCol;
+    private final int row;
+    private final int col;
+    private final int toRow;
+    private final int toCol;
 
+    // Creates a new location, combining the row and col into one data type
     public Location (int row, int col) {
         this.row = row;
         this.col = col;
@@ -11,6 +12,7 @@ public class Location {
         this.toCol = -1;
     }
 
+    // Creates a new location with the inputted location as toRow and toCol
     public Location(int row, int col, Location location) {
         this.toRow = location.getRow();
         this.toCol = location.getCol();
@@ -21,6 +23,8 @@ public class Location {
     public String toString() {
         return row + ", " + col + " -----> " + toRow + ", " + toCol;
     }
+
+    // Creates a new location with all inputted values
     public Location (int row, int col, int toRow, int toCol) {
         this.row = row;
         this.col = col;
@@ -50,6 +54,4 @@ public class Location {
         }
         return false;
     }
-
-
 }

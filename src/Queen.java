@@ -2,14 +2,14 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Queen extends Piece{
+
+    // Creates a new queen instance
     public Queen (int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
     }
 
-    public Queen clone(Board board) {
-        return new Queen(getRow(), getCol(), getColor(), board, getImage());
-    }
-
+    // Recursively finds the possible moves for a queen
+    @Override
     public void findMoves() {
         int row = getRow();
         int col = getCol();
@@ -25,6 +25,7 @@ public class Queen extends Piece{
         setMoves(moves);
     }
 
+    // Recursively adds dRow and dCol until it reaches a piece or boundary
     public void addMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
         if (row < 0 || row > 7 || col < 0 || col > 7)
             return;
@@ -58,6 +59,7 @@ public class Queen extends Piece{
         addMoves(moves, dRow, dCol, row + dRow, col + dCol);
     }
 
+    @Override
     public void resetControlled() {
         findMoves();
     }

@@ -5,15 +5,14 @@ public class Rook extends Piece{
 
     private boolean isFirstMove;
 
+    // Cretates a new instance of a rook
     public Rook(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
         isFirstMove = true;
     }
 
-    public Rook clone(Board board) {
-        return new Rook(getRow(), getCol(), getColor(), board, getImage());
-    }
-
+    // Recursively finds the rooks possible moves
+    @Override
     public void findMoves() {
         int row = getRow();
         int col = getCol();
@@ -25,6 +24,8 @@ public class Rook extends Piece{
         setMoves(moves);
     }
 
+    // Moves the piece to location l and sets isFirstMove to false
+    @Override
     public void move(Location l) {
         super.move(l);
         if (isFirstMove) {
@@ -32,10 +33,12 @@ public class Rook extends Piece{
         }
     }
 
+    @Override
     public boolean isFirstMove() {
         return isFirstMove;
     }
 
+    // Recursively finds the rook's possible moves
     public void getMoves(ArrayList<Location> moves, int dRow, int dCol, int row, int col) {
         if (row < 0 || row > 7 || col < 0 || col > 7)
             return;
@@ -69,6 +72,7 @@ public class Rook extends Piece{
         getMoves(moves, dRow, dCol, row + dRow, col + dCol);
     }
 
+    @Override
     public void resetControlled() {
         findMoves();
     }

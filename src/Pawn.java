@@ -2,15 +2,15 @@ import java.awt.*;
 import java.util.ArrayList;
 public class Pawn extends Piece {
     private boolean isFirstMove;
+
+    // Creates a new pawn instance
     public Pawn(int row, int col, int color, Board board, Image image) {
         super(row, col, color, board, image);
         isFirstMove = true;
     }
 
-    public ArrayList<Location> findControls() {
-        return null;
-    }
-
+    // Checks the pawns possible moves and sets them in the super class
+    @Override
     public void findMoves() {
         ArrayList<Location> moves = new ArrayList<>();
         if (getColor() == 1) {
@@ -44,10 +44,7 @@ public class Pawn extends Piece {
         setMoves(moves);
     }
 
-    public Pawn clone(Board board) {
-        return new Pawn(getRow(), getCol(), getColor(), board, getImage());
-    }
-
+    // Returns the pawns controlled spaces
     public ArrayList<Location> findControlled() {
         ArrayList<Location> attacks = new ArrayList<>();
         if (getCol() < 7) {
@@ -59,6 +56,7 @@ public class Pawn extends Piece {
         return attacks;
     }
 
+    // If its the pawns first move it sets isFirstMove to false
     @Override
     public void move(Location l) {
         super.move(l);
@@ -67,6 +65,7 @@ public class Pawn extends Piece {
         }
     }
 
+    @Override
     public void resetControlled() {
         setControlled(findControlled());
     }

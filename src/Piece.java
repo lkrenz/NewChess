@@ -1,14 +1,14 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.awt.*;
 public class Piece {
     private Location location;
-    private int color;
+    private final int color;
     private ArrayList<Location> controlled;
     private ArrayList<Location> moves;
-    private Board board;
-    private Image image;
+    private final Board board;
+    private final Image image;
 
+    // Creates a new piece instance
     public Piece(int row, int col, int color, Board board, Image image) {
         this.color = color;
         this.location = new Location(row, col);
@@ -16,9 +16,6 @@ public class Piece {
         this.image = image;
         this.moves = new ArrayList<>();
         this.controlled = null;
-    }
-    public boolean canPassant() {
-        return false;
     }
 
     public Board getBoard() {
@@ -48,17 +45,16 @@ public class Piece {
     public void resetControlled() {
         System.out.println("Called");
     }
+
     public boolean isFirstMove() {
         return false;
     }
 
-    public void checkMove() {
-        return;
-    }
     public void setMoves(ArrayList<Location> moves) {
         this.moves = moves;
     }
 
+    // Adds the pieces controlled squares to attacks
     public void addControlled(ArrayList<Location> attacks) {
         if (controlled != null) {
             for (Location l : controlled) {
@@ -72,16 +68,12 @@ public class Piece {
         }
     }
 
+    // Adds the pieces possible moves to attacks
     public void getMoves(ArrayList<Location> attacks) {
         for (Location l : moves) {
             attacks.add(new Location(getRow(), getCol(), l));
         }
     }
-
-    public ArrayList<Location> getMoves() {
-        return moves;
-    }
-
     public void setControlled(ArrayList<Location> controlled) {
         this.controlled = controlled;
     }
@@ -90,21 +82,5 @@ public class Piece {
         this.location = l;
     }
 
-    public void castle() {
-        return;
-    }
-
-    public void draw(Graphics g) {
-        return;
-    }
-
-    public Piece clone(Board board) {
-        return null;
-    }
-
     public void findMoves() {}
-
-    public void setControlled() {
-        this.controlled = moves;
-    }
 }
